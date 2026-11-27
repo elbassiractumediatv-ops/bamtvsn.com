@@ -21,6 +21,7 @@ export default function HomeHero({ headlines = [], ads = [] }) {
     <>
       <section className="bam-brand-hero" aria-labelledby="bam-hero-title">
         <nav className="bam-hero-nav" aria-label="Navigation principale">
+          <Link href="/" className="bam-nav-brand" aria-label="BAM TV SN — Accueil"><img src="/bam-tv-sn-logo.svg" alt="BAM TV SN" /></Link>
           <div className="bam-nav-links">
             {navigation.map(item => <Link key={item.href} href={item.href}>{item.label}</Link>)}
             <Link href="/direct" className="bam-nav-direct"><i /> Direct</Link>
@@ -40,9 +41,6 @@ export default function HomeHero({ headlines = [], ads = [] }) {
           </g>
         </svg>
         <div className="bam-hero-inner">
-          <div className="bam-hero-logo-wrap">
-            <img className="bam-hero-logo" src="/bam-tv-sn-logo.svg" alt="Logo officiel BAM TV SN" />
-          </div>
           <div className="bam-hero-copy">
             <span className="bam-hero-kicker">Vous suivez</span>
             <h1 id="bam-hero-title">BAM TV SN</h1>
