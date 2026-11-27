@@ -305,3 +305,41 @@
 .article-body figure{margin:1.5em 0}
 .article-body figcaption{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
 .article-body hr{border:0;border-top:1px solid var(--line);margin:2em 0}
+
+
+/* Cartes d'actualités : grille stable et affiches intégralement lisibles */
+.editorial-card{display:flex;flex-direction:column;min-width:0;height:100%;overflow:hidden;border:1px solid #e5ebe6;border-radius:9px;background:#fff;box-shadow:0 3px 12px #10251a0d}
+.editorial-card-image{display:block;position:relative;width:100%;min-width:0;aspect-ratio:16/9;overflow:hidden;background:#edf2ee}
+.article-cover-frame{display:block;width:100%;height:100%;aspect-ratio:16/9;overflow:hidden;background:#edf2ee}
+.article-cover-frame img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.article-cover-frame.is-portrait{background:#f4f5f2}
+.article-cover-frame.is-portrait img{object-fit:contain;background:#f4f5f2}
+.article-cover-fallback{position:relative;isolation:isolate;display:flex;width:100%;min-width:0;aspect-ratio:16/9;flex-direction:column;justify-content:space-between;gap:5px;overflow:hidden;box-sizing:border-box;padding:clamp(10px,2vw,22px);color:#fff;background:linear-gradient(130deg,#063c29 0%,#087a43 58%,#03291d 100%);text-align:left}
+.article-cover-fallback:before{content:"";position:absolute;z-index:-1;inset:0;background:repeating-linear-gradient(135deg,transparent 0 24px,#ffffff0c 25px 26px)}
+.article-cover-brand{font:900 clamp(10px,1.4vw,16px)/1 Manrope,sans-serif;letter-spacing:.08em}
+.article-cover-brand b{display:inline-block;background:#d92732;border-radius:3px;padding:3px 4px;font-size:.7em}
+.article-cover-category{align-self:flex-start;max-width:100%;padding:3px 6px;border-radius:2px;background:#d92732;color:#fff;font-size:clamp(7px,.85vw,10px);font-weight:900;line-height:1.25;text-transform:uppercase;overflow-wrap:anywhere}
+.article-cover-fallback strong{display:-webkit-box;min-width:0;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:3;font:800 clamp(11px,1.45vw,17px)/1.2 Manrope,sans-serif;overflow-wrap:anywhere;text-shadow:0 1px 4px #001b10}
+.article-cover-fallback small{display:block;border-top:1px solid #ffffff70;padding-top:5px;font-size:clamp(7px,.8vw,9px);font-weight:700;line-height:1.2}
+.article-cover-fallback-large{min-height:220px;max-height:560px;aspect-ratio:16/9;padding:clamp(18px,4vw,42px)}
+.article-cover-fallback-large strong{font-size:clamp(21px,3vw,36px);-webkit-line-clamp:4}
+.editorial-card-content{min-width:0;padding:10px 12px 13px}
+.editorial-card h3{display:-webkit-box;min-width:0;margin:0;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:4;font:750 15px/1.4 Manrope,sans-serif;overflow-wrap:anywhere;color:#17251c}
+.editorial-card h3 a:hover{color:#087a43}
+@media(max-width:650px){
+ .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 11px}
+ .editorial-card{border-radius:8px}
+ .editorial-card-content{padding:8px 9px 11px}
+ .editorial-card h3{font-size:13px;line-height:1.38;-webkit-line-clamp:4}
+ .article-cover-fallback{padding:9px;gap:4px}
+ .article-cover-brand{font-size:10px}
+ .article-cover-category{font-size:7px}
+ .article-cover-fallback strong{font-size:11px;-webkit-line-clamp:3}
+ .article-cover-fallback small{font-size:7px}
+}
+@media(max-width:350px){
+ .cards{grid-template-columns:1fr;gap:14px}
+ .editorial-card h3{font-size:15px}
+ .article-cover-fallback{padding:14px}
+ .article-cover-fallback strong{font-size:15px}
+}
