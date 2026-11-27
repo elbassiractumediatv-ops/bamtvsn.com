@@ -9,4 +9,5 @@ export default function TabsLayout(){return <Tabs screenOptions={{headerShown:fa
 <Tabs.Screen name="direct" options={{title:'Direct',tabBarIcon:({color,size})=><Ionicons name="radio" color={color} size={size}/>}}/>
 <Tabs.Screen name="favoris" options={{title:'Favoris',tabBarIcon:({color,size})=><Ionicons name="bookmark" color={color} size={size}/>}}/>
 <Tabs.Screen name="recherche" options={{href:null}}/>
+<Tabs.Screen name="menu" options={{href:null}}/>
 </Tabs>;}
