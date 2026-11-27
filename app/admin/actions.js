@@ -98,7 +98,7 @@ export async function createArticleAction(form) {
   const { data: articleCategory } = await supabase.from('categories').select('id').eq('id', category).eq('type', 'article').maybeSingle();
   if (!articleCategory) redirect('/admin?tab=article&error=article');
   let slug;
-  try { slug = await uniqueSlug(supabase, 'articles', title);
+  try { slug = await uniqueSlug(supabase, 'articles', title); }
   catch { redirect('/admin?tab=article&error=save'); }
   const { error } = await supabase.from('articles').insert({
     title, slug, excerpt: excerpt || null, content, cover_url: cover || null,
