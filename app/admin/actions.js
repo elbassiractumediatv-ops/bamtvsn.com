@@ -185,8 +185,10 @@ export async function saveAdvertisementAction(input) {
   const mimeType = String(input?.mimeType || '');
   const mediaType = String(input?.mediaType || '');
   const allowed = ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'];
-  if (title.length < 2 || !within(title, 120) || !path.startsWith('playlist/') ||
-      !/^playlist\\/[0-9]+-[0-9a-f-]+\\.(jpg|png|webp|gif|mp4|webm)$/i.test(path) ||
+  const filename = path.split('/').pop();
+  if (title.length < 2 || !within(title, 120) || path.split('/').length !== 2 ||
+      path.split('/')[0] !== 'playlist' ||
+      !/^[0-9]+-[0-9a-f-]+[.](jpg|png|webp|gif|mp4|webm)$/i.test(filename) ||
       !allowed.includes(mimeType) || !['image','video'].includes(mediaType) ||
       (mediaType === 'video') !== mimeType.startsWith('video/')) return { ok: false, error: 'invalid' };
   const duration = mediaType === 'image' ? Number(input?.durationSeconds) : 8;
