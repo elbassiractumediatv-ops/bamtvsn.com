@@ -81,8 +81,8 @@ export default async function HomePage() {
             </Link>
             <section className="reference-trends">
               <h2>TENDANCES</h2>
-              {trendingVideos.length ? trendingVideos.map((video,i)=><Link href={`/videos/${video.slug}`} className="reference-trend reference-trend-video" key={video.id}>
-                <span>{String(i+1).padStart(2,'0')}</span><div><strong>{video.title}</strong><small>{dateLabel(video.published_at)} · Vidéo</small></div>
+              {trendingVideos.length ? trendingVideos.map(video=><Link href={`/videos/${video.slug}`} className="reference-trend reference-trend-video" key={video.id}>
+                <img src={videoThumbnail(video) || '/placeholder-video.svg'} alt={video.title} loading="lazy" /><div><strong>{video.title}</strong><small>{dateLabel(video.published_at)} · Vidéo</small></div>
               </Link>) : <p>Aucune vidéo publiée au cours des cinq derniers mois.</p>}
               <h3 className="reference-trends-articles-title">ARTICLES POPULAIRES</h3>
               {trends.map((article,i)=><Link href={`/actualites/${article.slug}`} className="reference-trend" key={article.id}>
