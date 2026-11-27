@@ -786,3 +786,9 @@ body:has(.reference-home) .site-header{display:none!important}
   .bam-hero-ad .publicite-playlist-label strong{font-size:10px}
   .bam-hero-ad .publicite-playlist-whatsapp{font-size:9px;padding:6px 9px}
 }
+
+
+.admin-ad-contact-form{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin-top:5px}
+.admin-ad-contact-form label{display:grid;gap:4px;font-size:11px;font-weight:800;color:#52635b}
+.admin-ad-contact-form input{width:170px;max-width:100%;padding:8px 9px;border:1px solid #dce1e8;border-radius:5px;font:12px 'DM Sans',sans-serif}
+@media(max-width:650px){.admin-ad-contact-form{grid-column:1/-1;width:100%}.admin-ad-contact-form label{flex:1}.admin-ad-contact-form input{width:100%}}
