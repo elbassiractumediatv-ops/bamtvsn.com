@@ -43,3 +43,7 @@
 .bam-section .video-card .meta{color:#d7e6dd}
 .bam-home .empty-state{color:#234;background:#fff}
 @media(max-width:650px){.bam-ticker{height:52px;font-size:14px}.bam-ticker span{font-size:16px;padding:0 16px}.bam-welcome{padding:34px 0 30px}.bam-welcome-inner,.bam-feature-video,.bam-section{width:calc(100% - 30px)}.bam-welcome-logo{width:210px;height:105px;margin-bottom:24px}.bam-welcome h1{font-size:48px;margin:15px 0 20px}.bam-social-row{gap:9px;font-size:15px}.bam-social-row a{padding:10px 16px}.bam-motto{font-size:14px;letter-spacing:.14em}.bam-motto span{margin-left:24px}.bam-most-viewed{left:14px;top:14px;padding:8px 12px;font-size:13px}.bam-video-frame .play-icon{width:62px;height:62px}.bam-section-head h2{font-size:25px}.bam-section-head>a{font-size:12px}.bam-section .cards{grid-template-columns:1fr 1fr}}
+
+.category-filters{display:flex;gap:10px;overflow-x:auto;padding:4px 0 20px;margin:0 0 20px;scrollbar-width:thin}
+.category-filters a{flex:0 0 auto;border:1px solid #d8e2dc;border-radius:999px;padding:9px 16px;color:#164b35;background:#fff;font-weight:700;font-size:14px;white-space:nowrap}
+.category-filters a.active{background:#075b37;border-color:#075b37;color:#fff}
