@@ -466,3 +466,81 @@ body:has(.reference-home) .site-header{display:none!important}
 @media(prefers-reduced-motion:reduce){
  .bam-breaking-track{animation:none!important}
 }
+
+/* Disposition demandée : logo officiel à gauche, identité au centre, publicité en haut à droite */
+.bam-hero-inner{
+  width:min(1160px,calc(100% - 48px));
+  max-width:1160px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(170px,230px) minmax(0,1fr) minmax(190px,230px);
+  align-items:center;
+  column-gap:clamp(18px,3vw,42px);
+  height:285px;
+  min-height:285px;
+  padding:18px 0 48px;
+  position:relative;
+  z-index:2;
+}
+.bam-hero-logo-wrap{
+  width:100%;
+  height:auto;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+}
+.bam-hero-logo{
+  display:block;
+  width:100%;
+  max-width:225px;
+  height:auto;
+  object-fit:contain;
+  filter:drop-shadow(0 5px 10px #001d1490);
+}
+.bam-hero-copy{min-width:0;text-align:left}
+.bam-hero-copy h1{white-space:nowrap}
+.bam-hero-ad{
+  justify-self:end;
+  width:100%;
+  max-width:225px;
+  min-height:122px;
+  padding:18px 14px;
+  border:1px solid #ffffff70;
+  border-radius:12px;
+  background:#ffffffed;
+  color:#075b36;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  box-shadow:0 8px 28px #002d2033;
+  transition:transform .2s,box-shadow .2s;
+}
+.bam-hero-ad:hover{transform:translateY(-3px);box-shadow:0 12px 30px #002d2044}
+.bam-hero-ad strong{font-size:15px;font-weight:900;letter-spacing:.02em}
+.bam-hero-ad span{font-size:12px;color:#52675c}
+.bam-hero-ad b{display:inline-block;background:#087344;color:#fff;border-radius:30px;padding:8px 14px;font-size:11px}
+.bam-hero-nav .bam-nav-brand img{width:110px;height:52px;object-fit:contain}
+@media(max-width:850px){
+ .bam-hero-inner{grid-template-columns:140px minmax(0,1fr);column-gap:18px;height:auto;min-height:300px;padding:22px 0 56px}
+ .bam-hero-logo{max-width:140px}
+ .bam-hero-ad{grid-column:1/-1;justify-self:end;max-width:210px;min-height:76px;padding:10px 12px;gap:4px;margin-top:6px}
+ .bam-hero-ad strong{font-size:12px}
+ .bam-hero-ad span{font-size:10px}
+ .bam-hero-ad b{font-size:10px;padding:6px 12px}
+ .bam-hero-copy h1{font-size:clamp(30px,6vw,42px)}
+}
+@media(max-width:520px){
+ .bam-hero-inner{width:calc(100% - 30px);grid-template-columns:94px minmax(0,1fr);column-gap:12px;min-height:270px;padding:18px 0 48px}
+ .bam-hero-logo-wrap{align-self:start;padding-top:25px}
+ .bam-hero-logo{width:94px;max-width:94px}
+ .bam-hero-copy h1{font-size:clamp(25px,7vw,34px);white-space:normal}
+ .bam-hero-copy .bam-hero-socials{gap:5px;flex-wrap:wrap}
+ .bam-hero-copy .bam-hero-socials a{font-size:10px;padding:6px 9px}
+ .bam-hero-copy .bam-hero-motto{font-size:9px;letter-spacing:.12em;gap:5px;flex-wrap:wrap}
+ .bam-hero-ad{grid-column:2;justify-self:end;width:100%;max-width:190px;min-height:70px}
+ .bam-hero-nav{width:calc(100% - 24px)}
+ .bam-nav-brand img{width:78px!important;height:42px!important}
+}
