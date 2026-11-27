@@ -12,13 +12,17 @@ const socials = [
   { label: 'X', short: '𝕏', className: 'social-x', href: 'https://x.com/' },
 ];
 
+function toCategorySlug(value) {
+  return value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 function CategoryMenu({ title, href, categories }) {
   return (
     <div className="nav-dropdown">
       <Link href={href} className="nav-dropdown-trigger">{title}<span aria-hidden="true">⌄</span></Link>
       <div className="nav-dropdown-panel">
         {categories.map(category => (
-          <Link key={category} href={`${href}?categorie=${encodeURIComponent(category)}`}>{category}</Link>
+          <Link key={category} href={`${href}?categorie=${toCategorySlug(category)}`}>{category}</Link>
         ))}
       </div>
     </div>
