@@ -18,7 +18,7 @@ export async function sendContactMessage(form) {
   // Honeypot: silently accept bot submissions without storing them.
   if (website) redirect('/contact?sent=1');
 
-  const validEmail = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   if (
     name.length < 2 || name.length > 100 ||
     !validEmail || email.length > 200 ||
