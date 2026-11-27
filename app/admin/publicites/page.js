@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { requireAdmin } from '@/lib/admin';
-import { createAdvertisementAction, deleteAdvertisementAction, toggleAdvertisementAction } from '../actions';
+import { deleteAdvertisementAction, toggleAdvertisementAction } from '../actions';
+import AdvertisementUploadForm from '@/components/AdvertisementUploadForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,20 +33,7 @@ export default async function AdminAdvertisementsPage({ searchParams }) {
         {params.error === 'upload' && <div className="notice">L’envoi du média a échoué. Vérifiez le stockage publicitaire et réessayez.</div>}
         {params.error === 'save' && <div className="notice">Le média a été envoyé, mais son enregistrement a échoué. Réessayez ou contactez l’administrateur technique.</div>}
 
-        <form action={createAdvertisementAction} className="admin-form admin-advertisement-form">
-          <h2>Ajouter une publicité</h2>
-          <label>Titre de la publicité
-            <input name="title" type="text" minLength={2} maxLength={120} required placeholder="Ex. Offre spéciale de la semaine" />
-          </label>
-          <label>Fichier image ou vidéo
-            <input name="media" type="file" accept="image/jpeg,image/png,image/webp,image/gif,video/mp4,video/webm" required />
-          </label>
-          <label>Durée d’affichage des images (en secondes)
-            <input name="duration_seconds" type="number" min="5" max="60" defaultValue="8" />
-          </label>
-          <p className="meta">Les vidéos démarrent automatiquement, sans son, puis la suivante démarre dès la fin. Les images restent affichées pendant la durée choisie. Formats : JPG, PNG, WEBP, GIF, MP4 et WebM. Taille maximale : 50 Mo.</p>
-          <button className="button" type="submit">Ajouter à la playlist automatique</button>
-        </form>
+        <AdvertisementUploadForm />
 
         <div className="admin-advertisement-list">
           <h2>Médias programmés ({ads?.length || 0})</h2>
