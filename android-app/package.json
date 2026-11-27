@@ -8,7 +8,9 @@
     "android": "expo start --android",
     "doctor": "expo-doctor",
     "apk": "eas build --platform android --profile preview",
-    "aab": "eas build --platform android --profile production"
+    "aab": "eas build --platform android --profile production",
+    "typecheck": "tsc --noEmit",
+    "audit": "npm audit --omit=dev"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.0",
