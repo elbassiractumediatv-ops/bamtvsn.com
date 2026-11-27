@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+<defs>
+ <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#062b20"/><stop offset=".55" stop-color="#08713e"/><stop offset="1" stop-color="#031c18"/></linearGradient>
+ <linearGradient id="gold" x2="1"><stop stop-color="#9b6b19"/><stop offset=".5" stop-color="#ffe18a"/><stop offset="1" stop-color="#b88625"/></linearGradient>
+ <linearGradient id="red" x2="1" y2="1"><stop stop-color="#f04438"/><stop offset="1" stop-color="#a80c19"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#46b95f" stop-opacity=".45"/><stop offset="1" stop-color="#46b95f" stop-opacity="0"/></radialGradient>
+ <pattern id="geo" width="70" height="70" patternUnits="userSpaceOnUse"><path d="M35 2 68 35 35 68 2 35Z M35 17 53 35 35 53 17 35Z" fill="none" stroke="#d9bd72" stroke-opacity=".12" stroke-width="2"/></pattern>
+ <filter id="shadow"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<rect width="1200" height="675" fill="url(#bg)"/><rect width="1200" height="675" fill="url(#geo)"/>
+<circle cx="880" cy="320" r="430" fill="url(#glow)"/>
+<path d="M0 0H1200V20H0Z" fill="url(#gold)"/>
+<!-- BAM TV logo lockup -->
+<g transform="translate(48 34)">
+ <rect width="62" height="62" rx="12" fill="#d82c36"/>
+ <path d="M17 14h18c10 0 15 5 15 12 0 5-3 9-8 10 6 1 10 5 10 11 0 8-6 13-17 13H17zm14 18c4 0 6-2 6-5s-2-5-6-5h-3v10zm1 17c4 0 6-2 6-5s-2-5-6-5h-4v10z" fill="#fff"/>
+ <text x="78" y="31" fill="#fff" font-family="Arial,sans-serif" font-size="29" font-weight="800" letter-spacing="1">BAM TV <tspan fill="#ff5555">SN</tspan></text>
+ <text x="79" y="51" fill="#d7e8df" font-family="Arial,sans-serif" font-size="10" font-weight="600" letter-spacing="1">L’INFORMATION AU CŒUR DE NOS COMMUNAUTÉS</text>
+</g>
+<!-- abstract mosque silhouette -->
+<g opacity=".24" fill="#d9e6d8" transform="translate(55 365)">
+ <path d="M0 195V115H38V85H55V115H92V195ZM80 195V95H120V195ZM110 195V110H165V195ZM150 195V75H172V45H184V75H206V195Z"/>
+ <path d="M205 195V110Q270 20 335 110V195Z"/>
+ <path d="M253 73Q270 8 287 73Z"/>
+ <path d="M335 195V110H390V195ZM390 195V82H412V48H424V82H446V195Z"/>
+ <path d="M0 195H470V207H0Z"/>
+</g>
+<path d="M0 142H820L760 205H0Z" fill="url(#red)" stroke="url(#gold)" stroke-width="3"/>
+<text x="62" y="183" font-family="Arial,sans-serif" font-size="25" font-weight="800" fill="#fff" letter-spacing="2">HISTOIRE &amp; MÉMOIRE</text>
+<text x="60" y="286" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#f4d783" letter-spacing="3">DOSSIER SPÉCIAL</text>
+<text x="58" y="360" font-family="Arial,sans-serif" font-size="58" font-weight="900" fill="#fff">BAYE NIASS</text>
+<text x="60" y="411" font-family="Arial,sans-serif" font-size="30" font-weight="700" fill="#fff">L’histoire de Cheikh Ibrahima Niass</text>
+<text x="60" y="455" font-family="Arial,sans-serif" font-size="26" font-weight="600" fill="#f4d783">De Taïba Niassène au rayonnement</text>
+<text x="60" y="491" font-family="Arial,sans-serif" font-size="26" font-weight="600" fill="#f4d783">mondial de Médina Baye</text>
+<!-- ornamental portrait medallion / no fabricated likeness -->
+<g transform="translate(900 350)">
+ <circle r="215" fill="#08251c" stroke="url(#gold)" stroke-width="5"/>
+ <circle r="195" fill="none" stroke="#d7b65d" stroke-opacity=".65" stroke-width="2" stroke-dasharray="5 10"/>
+ <path d="M-120 130Q-105 12 -70 -10Q-38 -45 0 -45Q45 -45 78 -8Q110 30 122 130Z" fill="#f0e7d2" opacity=".95"/>
+ <path d="M-78 -55Q-70 -155 0 -160Q75 -150 82 -55Q45 -80 0 -80Q-43 -80 -78 -55Z" fill="#f7f4eb"/>
+ <path d="M-85 -55Q-100 -105 -62 -145Q-28 -182 18 -165Q72 -155 92 -110Q104 -80 80 -53Q55 -84 0 -88Q-50 -88 -85 -55Z" fill="#fff"/>
+ <ellipse cy="-18" rx="65" ry="82" fill="#815b42"/>
+ <path d="M-57 -25Q-35 -48 -13 -35M13 -35Q35 -48 57 -25" fill="none" stroke="#241b16" stroke-width="8" stroke-linecap="round"/>
+ <path d="M-10 -3Q0 5 10 -3M-24 27Q0 47 24 27" fill="none" stroke="#38241b" stroke-width="5" stroke-linecap="round"/>
+ <path d="M-42 52Q0 105 42 52Q30 110 0 116Q-30 110 -42 52Z" fill="#eee9dc"/>
+</g>
+<path d="M0 585Q450 620 1200 555V675H0Z" fill="#031a14" opacity=".95"/>
+<path d="M0 585Q450 620 1200 555" fill="none" stroke="url(#gold)" stroke-width="5"/>
+<text x="55" y="633" fill="#fff" font-family="Arial,sans-serif" font-size="20" font-weight="700">VENDREDI 27 NOVEMBRE 2026 · 03:19 · DAKAR</text>
+<text x="1145" y="634" text-anchor="end" fill="#d9c17b" font-family="Arial,sans-serif" font-size="18" font-weight="800">BAMTVSN.COM</text>
+<text x="1145" y="520" text-anchor="end" fill="#ffffff" fill-opacity=".07" font-family="Arial,sans-serif" font-size="220" font-weight="900">27</text>
+</svg>
