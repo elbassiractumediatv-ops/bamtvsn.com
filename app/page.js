@@ -20,7 +20,7 @@ export default async function HomePage() {
   return <div className="bam-home">
     <div className="bam-ticker"><span>En bref</span><div>{ticker?.title || 'BAM TV SN : l’essentiel de l’actualité au Sénégal et dans le monde'}</div></div>
     <section className="bam-welcome"><div className="bam-welcome-inner">
-      <img className="bam-welcome-logo" src="/logo-bamtv.svg" alt="BAM TV SN"/>
+      <img className="bam-welcome-logo" src="/bam-tv-sn-logo.svg" alt="BAM TV SN"/>
       <span className="bam-follow-label">Vous suivez</span>
       <h1>BAM TV SN</h1>
       <div className="bam-social-row"><span>sur</span>{socials.map(s=><a key={s.label} href={s.href} target="_blank" rel="noreferrer">{s.label}</a>)}</div>
