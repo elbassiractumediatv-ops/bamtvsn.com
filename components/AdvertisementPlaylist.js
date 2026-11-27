@@ -9,7 +9,7 @@ function whatsappHref(phone, title) {
   return `https://wa.me/${digits}?text=${message}`;
 }
 
-export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
+export default function AdvertisementPlaylist({ ads = [], variant = 'page', paused = false }) {
   const items = useMemo(() => (Array.isArray(ads) ? ads : []).filter((item) =>
     item && typeof item.media_url === 'string' &&
     (item.media_type === 'image' || item.media_type === 'video')
@@ -48,12 +48,14 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
   useEffect(() => {
     if (!current || current.media_type !== 'image') return undefined;
     const seconds = Math.min(60, Math.max(5, Number(current.duration_seconds) || 8));
+    if (paused) return undefined;
     const timer = window.setTimeout(advance, seconds * 1000);
     return () => window.clearTimeout(timer);
-  }, [current?.id, current?.media_type, current?.duration_seconds, items.length]);
+  }, [current?.id, current?.media_type, current?.duration_seconds, items.length, paused]);
 
   useEffect(() => {
     if (!current || current.media_type !== 'video') return undefined;
+    if (paused) { videoRef.current?.pause(); return undefined; }
     const video = videoRef.current;
     if (!video) return undefined;
     let cancelled = false;
@@ -88,7 +90,7 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
       cancelled = true;
       video.removeEventListener('canplay', start);
     };
-  }, [current?.id, current?.media_type, current?.media_url, soundPreference]);
+  }, [current?.id, current?.media_type, current?.media_url, soundPreference, paused]);
 
   const enableSound = async () => {
     const video = videoRef.current;
@@ -130,7 +132,7 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
             ref={videoRef}
             className="publicite-playlist-media"
             src={current.media_url}
-            autoPlay
+            autoPlay={!paused}
             playsInline
             loop={false}
             preload="auto"

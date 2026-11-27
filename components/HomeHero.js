@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import AdvertisementPlaylist from '@/components/AdvertisementPlaylist';
+import HomeLiveAndAds from '@/components/HomeLiveAndAds';
 
 const channels = [
   { label: 'YouTube', href: 'https://www.youtube.com/@BAMTVSN' },
@@ -54,7 +54,7 @@ export default function HomeHero({ headlines = [], ads = [] }) {
             </div>
             <p className="bam-hero-motto"><span>INFORMER</span><i /> <span>ÉDUQUER</span><i /> <span>DIVERTIR</span><i /> <span>RASSEMBLER</span></p>
           </div>
-          <div className="bam-hero-ad"><AdvertisementPlaylist ads={ads} variant="hero" /></div>
+          <div className="bam-hero-media"><HomeLiveAndAds ads={ads} /></div>
         </div>
         <div className="bam-flag-waves" aria-hidden="true"><i /><i /><i /></div>
       </section>
