@@ -1,0 +1,27 @@
+name: Android app checks
+on:
+  push:
+    paths:
+      - "android-app/**"
+      - ".github/workflows/android-app.yml"
+  pull_request:
+    paths:
+      - "android-app/**"
+      - ".github/workflows/android-app.yml"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: android-app/package-lock.json
+      - run: npm install --no-audit
+      - run: npx expo install --fix --check
+      - run: npm run typecheck
+      - run: npx expo-doctor
