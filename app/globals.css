@@ -619,3 +619,29 @@ body:has(.reference-home) .site-header{display:none!important}
  .reference-content-grid{gap:18px}
  .reference-sidebar{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 }
+
+
+/* Page Publicité : visuel partenaire responsive */
+.publicite-page{width:min(1180px,calc(100% - 36px));margin:clamp(28px,5vw,64px) auto 76px}
+.publicite-intro{margin:0 0 28px}
+.publicite-intro .eyebrow{color:#087344;font-size:12px;font-weight:900;letter-spacing:.16em}
+.publicite-intro h1{font:900 clamp(30px,5vw,48px)/1.08 Manrope,sans-serif;color:#10251d;margin:10px 0 12px}
+.publicite-intro>p:last-child{max-width:760px;color:#52635b;line-height:1.7}
+.publicite-list{margin:0 0 34px}
+.publicite-ad-card{display:grid;grid-template-columns:minmax(280px,420px) minmax(0,1fr);gap:clamp(22px,4vw,44px);align-items:center;padding:clamp(16px,3vw,30px);border:1px solid #dfe9e3;border-radius:20px;background:#fff;box-shadow:0 14px 42px #0a3d2510}
+.publicite-ad-visual{max-width:420px;margin:0 auto;width:100%;border-radius:14px;overflow:hidden;background:#071b78}
+.publicite-ad-visual img{display:block;width:100%;height:auto;aspect-ratio:2/3;object-fit:contain}
+.publicite-ad-details h2{font:900 clamp(25px,3vw,36px)/1.12 Manrope,sans-serif;color:#10251d;margin:12px 0}
+.publicite-ad-details p{color:#52635b;line-height:1.75}
+.publicite-ad-tag{display:inline-flex;padding:7px 11px;border-radius:999px;background:#e5f5eb;color:#087344;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.publicite-whatsapp{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:14px 19px;border-radius:9px;background:#0b9d50;color:#fff;font-weight:900;line-height:1.35;text-align:center;box-shadow:0 8px 22px #0b9d5030}
+.publicite-whatsapp:hover{background:#087c40}
+.publicite-card{margin-top:32px}
+.publicite-card h2{font:900 clamp(25px,4vw,38px)/1.12 Manrope,sans-serif;margin:8px 0 16px}
+@media(max-width:760px){
+ .publicite-page{width:calc(100% - 24px);margin:28px auto 48px}
+ .publicite-ad-card{grid-template-columns:minmax(0,1fr);gap:18px;padding:14px}
+ .publicite-ad-visual{max-width:420px}
+ .publicite-ad-details{padding:4px 4px 8px}
+ .publicite-whatsapp{width:100%}
+}
