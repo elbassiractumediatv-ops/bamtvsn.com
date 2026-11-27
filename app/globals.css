@@ -428,3 +428,41 @@
 @media(prefers-reduced-motion:reduce){
  .bam-breaking-track,.bam-hero-light,.bam-hero-logo,.bam-flag-waves i{animation:none!important}
 }
+
+/* Accueil : la bannière verte remplace entièrement l'ancien bandeau blanc */
+body:has(.reference-home) .site-header{display:none!important}
+.bam-brand-hero{height:auto;min-height:420px;padding-bottom:58px}
+.bam-hero-nav{position:relative;z-index:4;width:min(1160px,calc(100% - 48px));min-height:72px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;border-bottom:1px solid #ffffff2b}
+.bam-nav-brand{display:flex;align-items:center;flex:0 0 auto}
+.bam-nav-brand img{display:block;width:112px;height:54px;object-fit:contain;filter:drop-shadow(0 2px 4px #002c1c66)}
+.bam-nav-links{display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,2vw,27px);flex-wrap:wrap}
+.bam-nav-links>a{color:#fff;font-size:13px;font-weight:800;white-space:nowrap;padding:10px 0;transition:color .2s}
+.bam-nav-links>a:hover{color:#ffed49}
+.bam-nav-links>a.bam-nav-direct{display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border-radius:6px;background:#d92732;color:#fff}
+.bam-nav-direct i{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 0 4px #ffffff33}
+.bam-hero-inner{height:285px;padding-bottom:16px}
+.bam-breaking{height:48px;position:relative;z-index:2}
+.bam-breaking>strong{padding:0 22px;font-size:14px}
+.bam-breaking-track{animation-duration:38s;will-change:transform}
+.bam-breaking-track span{padding:0 34px;font-size:14px}
+.bam-breaking-track b{font-variant-numeric:tabular-nums}
+@media(max-width:700px){
+ .bam-brand-hero{min-height:0;padding-bottom:52px}
+ .bam-hero-nav{width:calc(100% - 28px);min-height:62px;gap:10px;align-items:center}
+ .bam-nav-brand img{width:82px;height:46px}
+ .bam-nav-links{flex:1;gap:0;justify-content:flex-end;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+ .bam-nav-links::-webkit-scrollbar{display:none}
+ .bam-nav-links>a{font-size:11px;padding:10px 8px}
+ .bam-nav-links>a.bam-nav-direct{padding:8px 10px}
+ .bam-hero-inner{height:auto;min-height:350px;padding:18px 0 50px;gap:3px}
+ .bam-hero-logo-wrap{height:80px}
+ .bam-hero-logo{width:132px;height:78px}
+ .bam-hero-copy h1{font-size:clamp(34px,9vw,44px)}
+ .bam-breaking{height:43px}
+ .bam-breaking>strong{padding:0 12px;font-size:12px}
+ .bam-breaking-track{animation-duration:30s}
+ .bam-breaking-track span{font-size:11px;padding:0 19px}
+}
+@media(prefers-reduced-motion:reduce){
+ .bam-breaking-track{animation:none!important}
+}
