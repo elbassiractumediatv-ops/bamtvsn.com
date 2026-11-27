@@ -38,7 +38,7 @@ jobs:
       run:
         working-directory: android-app
     env:
-      GRADLE_OPTS: -Dorg.gradle.jvmargs=-Xmx4g\ -XX:MaxMetaspaceSize=1g\ -Dfile.encoding=UTF-8
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
