@@ -942,3 +942,24 @@ body:has(.reference-home) .site-header{display:none!important}
   .bam-home-ad-column .publicite-playlist-whatsapp{left:5px;bottom:5px;padding:4px 6px;font-size:7px}
   .bam-home-ad-column .publicite-playlist-sound{top:5px;right:5px;padding:4px 6px;font-size:8px}
 }
+
+
+/* Correctif direct YouTube : iframe natif visible et espace publicitaire agrandi */
+.bam-home-live-frame{isolation:isolate}
+.bam-home-live-embed{position:absolute;inset:0;width:100%;height:100%;display:block;border:0}
+.bam-home-live-loading{z-index:2}
+.bam-live-ads-layout{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px}
+.bam-home-ad-column .bam-hero-ad{max-width:none;width:100%}
+.bam-home-ad-column .publicite-playlist-frame{min-height:190px;aspect-ratio:16/10}
+.bam-home-ad-column .publicite-playlist-label strong{font-size:12px}
+.bam-home-ad-column .publicite-playlist-whatsapp{font-size:10px;padding:7px 9px}
+@media(max-width:1120px){
+ .bam-live-ads-layout{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:10px}
+ .bam-home-ad-column .publicite-playlist-frame{min-height:170px}
+}
+@media(max-width:520px){
+ .bam-live-ads-layout{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:8px}
+ .bam-home-ad-column .publicite-playlist-frame{min-height:0;aspect-ratio:4/3}
+ .bam-home-ad-column .publicite-playlist-label strong{font-size:9px}
+ .bam-home-ad-column .publicite-playlist-whatsapp{font-size:8px;padding:5px 6px}
+}
