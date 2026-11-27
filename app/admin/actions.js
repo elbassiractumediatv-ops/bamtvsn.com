@@ -38,7 +38,7 @@ async function validImageSignature(file, mime) {
 
 export async function loginAction(form) {
   const email = val(form, 'email');
-  const password = val(form, 'password');
+  const password = String(form.get('password') ?? '');
   if (!email || !password || !within(email, 254) || !within(password, 1024) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) redirect('/admin?error=missing');
   const { supabase } = await getAdminUser();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -60,6 +60,7 @@ export async function createVideoAction(form) {
   const title = val(form, 'title');
   const youtubeId = val(form, 'youtube_id');
   const description = val(form, 'description');
+  const status = val(form, 'status') === 'published' ? 'published' : 'draft';
   const thumbnail = val(form, 'thumbnail_url');
   const categoryId = val(form, 'category_id');
   const emissionId = val(form, 'emission_id');
@@ -72,12 +73,12 @@ export async function createVideoAction(form) {
   const { error } = await supabase.from('videos').insert({
     title, slug, youtube_id: youtubeId, description: description || null,
     thumbnail_url: thumbnail || null, category_id: categoryId,
-    emission_id: emissionId || null, status: 'published', featured: false,
-    published_at: new Date().toISOString()
+    emission_id: emissionId || null, status, featured: false,
+    published_at: status === 'published' ? new Date().toISOString() : null
   });
   if (error) redirect('/admin?tab=video&error=save');
   revalidatePath('/', 'layout');
-  redirect('/admin?tab=video&created=video');
+  redirect('/admin?tab=video&created=' + status);
 }
 
 export async function createArticleAction(form) {
@@ -87,6 +88,7 @@ export async function createArticleAction(form) {
   const content = val(form, 'content');
   const cover = val(form, 'cover_url');
   const category = val(form, 'category_id');
+  const status = val(form, 'status') === 'published' ? 'published' : 'draft';
   if (!title || !within(title, 180) || !within(excerpt, 600) || !content ||
       !within(content, 100000) || !validUuid(category) || !validUrl(cover)) {
     redirect('/admin?tab=article&error=article');
@@ -96,12 +98,12 @@ export async function createArticleAction(form) {
   catch { redirect('/admin?tab=article&error=save'); }
   const { error } = await supabase.from('articles').insert({
     title, slug, excerpt: excerpt || null, content, cover_url: cover || null,
-    category_id: category, status: 'published', featured: false,
-    author_id: user.id, published_at: new Date().toISOString()
+    category_id: category, status, featured: false,
+    author_id: user.id, published_at: status === 'published' ? new Date().toISOString() : null
   });
   if (error) redirect('/admin?tab=article&error=save');
   revalidatePath('/', 'layout');
-  redirect('/admin?tab=article&created=article');
+  redirect('/admin?tab=article&created=' + status);
 }
 
 export async function createEmissionAction(form) {
@@ -142,4 +144,18 @@ export async function uploadArticleBannerAction(form) {
   const { data } = supabase.storage.from('articles').getPublicUrl(path);
   revalidatePath('/', 'layout');
   redirect(`/admin/images?uploaded=1&url=${encodeURIComponent(data.publicUrl)}`);
+}
+
+export async function publishDraftAction(form) {
+  const { supabase } = await requireAdmin();
+  const table = val(form, 'type') === 'video' ? 'videos' : 'articles';
+  const id = val(form, 'id');
+  if (!/^[0-9a-f-]{36}$/i.test(id)) redirect('/admin?error=invalid');
+  const { error } = await supabase.from(table).update({
+    status: 'published',
+    published_at: new Date().toISOString()
+  }).eq('id', id).eq('status', 'draft');
+  if (error) redirect('/admin?error=save');
+  revalidatePath('/', 'layout');
+  redirect('/admin?tab=review&published=1');
 }
