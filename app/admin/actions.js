@@ -62,3 +62,26 @@ export async function createEmissionAction(form) {
   if (error) redirect('/admin?tab=emission&error=save');
   revalidatePath('/', 'layout'); redirect('/admin?tab=emission&created=emission');
 }
+
+export async function uploadArticleBannerAction(form) {
+  const { supabase } = await requireAdmin();
+  const file = form.get('banner');
+  if (!(file instanceof File) || file.size === 0) redirect('/admin/images?error=missing');
+  const allowed = {
+    'image/jpeg': 'jpg',
+    'image/png': 'png',
+    'image/webp': 'webp',
+  };
+  const extension = allowed[file.type];
+  if (!extension || file.size > 8 * 1024 * 1024) redirect('/admin/images?error=invalid');
+  const path = `banners/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+  const { error } = await supabase.storage.from('articles').upload(path, file, {
+    contentType: file.type,
+    cacheControl: '31536000',
+    upsert: false,
+  });
+  if (error) redirect('/admin/images?error=upload');
+  const { data } = supabase.storage.from('articles').getPublicUrl(path);
+  revalidatePath('/', 'layout');
+  redirect(`/admin/images?uploaded=1&url=${encodeURIComponent(data.publicUrl)}`);
+}
