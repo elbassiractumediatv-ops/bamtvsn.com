@@ -14,7 +14,7 @@ Application React Native / Expo connectée en lecture seule au projet Supabase e
 ## Configuration
 1. Installer Node.js 22.13 ou supérieur.
 2. Copier le fichier .env.example vers .env.
-3. Renseigner EXPO_PUBLIC_SUPABASE_URL et EXPO_PUBLIC_SUPABASE_ANON_KEY avec les valeurs publiques du projet BAM TV SN (thevryhybiloqddnoeof). Ne jamais utiliser service_role.
+3. Renseigner EXPO_PUBLIC_SUPABASE_URL et EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY avec les valeurs publiques du projet BAM TV SN (thevryhybiloqddnoeof). Ne jamais utiliser service_role.
 4. Dans ce dossier, exécuter npm install, npx expo install --fix, npx expo-doctor puis npx expo start.
 
 ## Builds Android
