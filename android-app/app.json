@@ -11,13 +11,17 @@
       "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#087A3B"
-      }
+      },
+      "allowBackup": false,
+      "permissions": [],
+      "usesCleartextTraffic": false
     },
     "plugins": [
       "expo-router"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "newArchEnabled": true
   }
 }
