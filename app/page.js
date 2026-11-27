@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { getArticles, getVideos, getEmissions } from '@/lib/content';
-import { articleBanner } from '@/lib/article-banner';
 import ArticleCard from '@/components/ArticleCard';
 import VideoCard from '@/components/VideoCard';
 import EmptyState from '@/components/EmptyState';
@@ -12,12 +11,12 @@ const youtubeChannel = 'https://www.youtube.com/@BAMTVSN';
 export default async function HomePage() {
   const [articles, videos, emissions] = await Promise.all([
     getArticles(100).catch(() => []),
-    getVideos(5).catch(() => []),
+    getVideos(4).catch(() => []),
     getEmissions(3).catch(() => []),
   ]);
 
   const lead = articles[0] ?? null;
-  const latest = articles.slice(1);
+  const latest = articles.slice(0, 4);
 
   return (
     <div className="home-redesign">
@@ -43,29 +42,17 @@ export default async function HomePage() {
         </a>
       </section>
 
-      {lead ? (
-        <section className="home-lead wrap" aria-label="À la une">
-          <Link href={`/actualites/${lead.slug}`} className="home-lead-image">
-            <img src={lead.cover_url || articleBanner(lead)} alt={lead.title} />
-          </Link>
-          <div className="home-lead-copy">
-            <h2><Link href={`/actualites/${lead.slug}`}>{lead.title}</Link></h2>
-          </div>
-        </section>
-      ) : (
-        <section className="wrap home-empty"><EmptyState title="Les actualités arrivent bientôt">Les prochains articles publiés par la rédaction apparaîtront ici.</EmptyState></section>
-      )}
 
       <section className="section soft">
         <div className="wrap">
-          <div className="section-head"><div><p className="eyebrow">Le fil de l’information</p><h2>Toutes les actualités récentes</h2></div><Link className="text-link" href="/actualites">Toute l’actualité →</Link></div>
+          <div className="section-head"><div><p className="eyebrow">Le fil de l’information</p><h2>Les 4 affiches récentes</h2></div><Link className="text-link" href="/actualites">Tout voir →</Link></div>
           {latest.length ? <div className="cards">{latest.map(article => <ArticleCard key={article.id} article={article} />)}</div> : <EmptyState title="Aucun autre article pour le moment">Consultez régulièrement cette rubrique pour suivre les nouvelles publications.</EmptyState>}
         </div>
       </section>
 
       <section className="section">
         <div className="wrap">
-          <div className="section-head"><div><p className="eyebrow">Reportages et magazines</p><h2>En images</h2></div><Link className="text-link" href="/videos">Toutes les vidéos →</Link></div>
+          <div className="section-head"><div><p className="eyebrow">Reportages et magazines</p><h2>Les 4 vidéos récentes</h2></div><Link className="text-link" href="/videos">Tout voir →</Link></div>
           {videos.length ? <div className="video-grid">{videos.map(video => <VideoCard key={video.id} video={video} />)}</div> : <EmptyState title="Les vidéos arrivent bientôt">Les reportages et vidéos publiés seront présentés dans cette rubrique.</EmptyState>}
         </div>
       </section>
