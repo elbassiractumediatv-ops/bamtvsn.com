@@ -9,5 +9,5 @@ export default function NewsScreen(){
  useEffect(()=>{load()},[load]);
  return <ScrollView style={{flex:1,backgroundColor:C.bg}} contentContainerStyle={{padding:16}} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{setRefreshing(true);load()}} tintColor={C.green}/>}>
  <Header title="Actualités" subtitle="Les dernières informations"/>{error?<ErrorBox message={error} onRetry={load}/>:null}{busy?<Loading/>:null}{!busy&&!items.length&&!error?<Empty/>:null}
- {items.map(x=><ArticleCard key={x.id} item={x} onPress={()=>router.push('/article/'+x.slug)}/>)}</ScrollView>;
+ {items.map(x=><ArticleCard key={x.id} item={x} onPress={()=>router.push({pathname:'/article/[slug]',params:{slug:x.slug}})}/>)}</ScrollView>;
 }
