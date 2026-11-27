@@ -191,7 +191,6 @@ export async function saveAdvertisementAction(input) {
       (mediaType === 'video') !== mimeType.startsWith('video/')) return { ok: false, error: 'invalid' };
   const duration = mediaType === 'image' ? Number(input?.durationSeconds) : 8;
   if (!Number.isInteger(duration) || duration < 5 || duration > 60) return { ok: false, error: 'invalid' };
-  const filename = path.split('/').pop();
   const { data: files, error: listError } = await supabase.storage.from('publicites').list('playlist', { search: filename, limit: 20 });
   if (listError || !files?.some((file) => file.name === filename)) return { ok: false, error: 'upload' };
   const { data: last } = await supabase.from('advertisements').select('position').order('position', { ascending: false }).limit(1).maybeSingle();
