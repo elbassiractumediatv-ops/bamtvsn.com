@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import AdvertisementPlaylist from '@/components/AdvertisementPlaylist';
 
 const channels = [
   { label: 'YouTube', href: 'https://www.youtube.com/@BAMTVSN' },
@@ -14,7 +15,7 @@ const navigation = [
   { label: 'Contact', href: '/contact' },
 ];
 
-export default function HomeHero({ headlines = [] }) {
+export default function HomeHero({ headlines = [], ads = [] }) {
   const news = headlines.length ? headlines : [{ time: 'BAM TV SN', title: 'Retrouvez toute l’actualité sur BAM TV SN' }];
   return (
     <>
@@ -53,7 +54,7 @@ export default function HomeHero({ headlines = [] }) {
             </div>
             <p className="bam-hero-motto"><span>INFORMER</span><i /> <span>ÉDUQUER</span><i /> <span>DIVERTIR</span><i /> <span>RASSEMBLER</span></p>
           </div>
-          <Link href="/publicite" className="bam-hero-ad"><strong>VOTRE PUBLICITÉ ICI</strong><span>Espace publicitaire</span><b>Réserver / publier une annonce</b></Link>
+          <div className="bam-hero-ad"><AdvertisementPlaylist ads={ads} variant="hero" /></div>
         </div>
         <div className="bam-flag-waves" aria-hidden="true"><i /><i /><i /></div>
       </section>
