@@ -1002,3 +1002,69 @@ body:has(.reference-home) .bam-live-ads-layout{grid-template-columns:minmax(0,1.
   body:has(.reference-home) .bam-hero-live{min-height:27px;padding:0 9px;font-size:9px}
   body:has(.reference-home) .bam-hero-media{grid-column:1/-1;grid-row:2;width:100%;max-width:none}
 }
+
+/* Final homepage layout: logo in the top bar, brand copy left, two aligned players right */
+body:has(.reference-home) .bam-hero-nav{justify-content:space-between;gap:24px}
+body:has(.reference-home) .bam-nav-brand{display:flex!important;align-items:center;flex:0 0 auto}
+body:has(.reference-home) .bam-nav-brand img{width:94px;height:48px;object-fit:contain}
+body:has(.reference-home) .bam-nav-links{flex:1;justify-content:flex-end;flex-wrap:nowrap}
+body:has(.reference-home) .bam-hero-inner{
+  grid-template-columns:minmax(280px,.92fr) minmax(480px,1.45fr);
+  gap:clamp(24px,3vw,44px);
+  align-items:center;
+  height:auto;min-height:330px;padding:26px 0 62px;
+}
+body:has(.reference-home) .bam-hero-copy{grid-column:1;grid-row:1;transform:none;min-width:0}
+body:has(.reference-home) .bam-hero-copy h1{font-size:clamp(42px,4.6vw,66px);white-space:nowrap}
+body:has(.reference-home) .bam-hero-socials{display:flex;flex-wrap:nowrap;gap:8px;white-space:nowrap}
+body:has(.reference-home) .bam-hero-socials>a:not(.bam-hero-live){padding:0 13px}
+body:has(.reference-home) .bam-hero-motto{display:flex;flex-wrap:nowrap;gap:10px;font-size:clamp(10px,.9vw,13px);letter-spacing:.1em;white-space:nowrap}
+body:has(.reference-home) .bam-hero-media{grid-column:2;grid-row:1;justify-self:stretch;width:100%;min-width:0}
+body:has(.reference-home) .bam-live-ads-layout{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start;gap:12px}
+body:has(.reference-home) .bam-home-live-frame,
+body:has(.reference-home) .bam-home-ad-column .publicite-playlist-frame{
+  width:100%;aspect-ratio:16/9;height:auto;min-height:0;
+  border:0;border-radius:10px;background:#00150e;box-shadow:0 8px 22px #00150e55;
+}
+body:has(.reference-home) .bam-home-ad-column .bam-hero-ad,
+body:has(.reference-home) .bam-home-ad-column .publicite-video-section{
+  display:block;width:100%;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;
+}
+body:has(.reference-home) .bam-home-ad-column .publicite-playlist-frame{overflow:hidden}
+body:has(.reference-home) .bam-home-ad-column .publicite-playlist-media{object-fit:cover;background:#00150e}
+body:has(.reference-home) .bam-home-ad-column .publicite-playlist-empty{min-height:0;aspect-ratio:16/9;background:#00150e;color:#fff;border:0}
+.bam-live-sound-button{
+  position:absolute;z-index:4;right:10px;bottom:10px;
+  border:1px solid #ffffffb5;border-radius:999px;padding:9px 13px;
+  background:#087344ed;color:#fff;font-size:12px;font-weight:900;
+  cursor:pointer;box-shadow:0 3px 12px #0005;
+}
+.bam-live-sound-button:hover{background:#075b37}
+@media(max-width:1120px){
+ body:has(.reference-home) .bam-hero-inner{grid-template-columns:minmax(250px,.85fr) minmax(420px,1.35fr);gap:18px}
+ body:has(.reference-home) .bam-nav-brand img{width:86px}
+ body:has(.reference-home) .bam-hero-socials{gap:6px}
+ body:has(.reference-home) .bam-hero-socials>a:not(.bam-hero-live){padding:0 10px}
+ body:has(.reference-home) .bam-hero-motto{letter-spacing:.06em;gap:7px}
+}
+@media(max-width:850px){
+ body:has(.reference-home) .bam-hero-nav{width:calc(100% - 28px);min-height:62px;gap:10px}
+ body:has(.reference-home) .bam-nav-brand img{width:78px;height:44px}
+ body:has(.reference-home) .bam-nav-links{overflow-x:auto;gap:14px}
+ body:has(.reference-home) .bam-hero-inner{grid-template-columns:minmax(0,1fr);gap:18px;min-height:0;padding:22px 0 62px}
+ body:has(.reference-home) .bam-hero-copy{grid-column:1;grid-row:1}
+ body:has(.reference-home) .bam-hero-media{grid-column:1;grid-row:2}
+ body:has(.reference-home) .bam-hero-socials{flex-wrap:wrap}
+ body:has(.reference-home) .bam-hero-motto{flex-wrap:wrap;white-space:normal}
+}
+@media(max-width:520px){
+ body:has(.reference-home) .bam-hero-inner{width:calc(100% - 24px);gap:14px}
+ body:has(.reference-home) .bam-hero-copy h1{font-size:clamp(34px,9vw,44px);white-space:normal}
+ body:has(.reference-home) .bam-hero-socials{gap:6px}
+ body:has(.reference-home) .bam-hero-socials>a:not(.bam-hero-live){min-height:31px;padding:0 11px;font-size:11px}
+ body:has(.reference-home) .bam-hero-live{min-height:31px;padding:0 11px;font-size:11px}
+ body:has(.reference-home) .bam-live-ads-layout{grid-template-columns:minmax(0,1fr);gap:14px}
+ body:has(.reference-home) .bam-home-live-heading,body:has(.reference-home) .bam-home-ad-heading{font-size:10px;justify-content:flex-start}
+ body:has(.reference-home) .bam-home-live-frame,body:has(.reference-home) .bam-home-ad-column .publicite-playlist-frame{aspect-ratio:16/9}
+ .bam-live-sound-button{right:7px;bottom:7px;padding:7px 10px;font-size:10px}
+}
