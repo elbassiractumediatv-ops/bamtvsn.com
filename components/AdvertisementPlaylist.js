@@ -2,29 +2,38 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-export default function AdvertisementPlaylist({ ads = [] }) {
+function whatsappHref(phone, title) {
+  const digits = String(phone || '').replace(/\D/g, '');
+  if (!/^\d{8,15}$/.test(digits)) return null;
+  const message = encodeURIComponent(`Bonjour, je vous contacte depuis BAM TV SN au sujet de votre publicité : ${title}.`);
+  return `https://wa.me/${digits}?text=${message}`;
+}
+
+export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
   const items = useMemo(() => (Array.isArray(ads) ? ads : []).filter((item) =>
     item && typeof item.media_url === 'string' &&
     (item.media_type === 'image' || item.media_type === 'video')
   ), [ads]);
   const [index, setIndex] = useState(0);
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const [mediaFailed, setMediaFailed] = useState(false);
   const videoRef = useRef(null);
   const current = items[index] || null;
+  const isHero = variant === 'hero';
 
   const advance = () => {
-    if (items.length > 1) setIndex((value) => (value + 1) % items.length);
-    else if (items.length === 1) {
-      const video = videoRef.current;
-      if (video) {
-        video.currentTime = 0;
-        video.play().catch(() => setAutoplayBlocked(true));
-      }
+    if (items.length > 1) {
+      setMediaFailed(false);
+      setAutoplayBlocked(false);
+      setIndex((value) => (value + 1) % items.length);
+    } else {
+      setMediaFailed(true);
     }
   };
 
   useEffect(() => {
     setIndex(0);
+    setMediaFailed(false);
   }, [items.length]);
 
   useEffect(() => {
@@ -39,37 +48,37 @@ export default function AdvertisementPlaylist({ ads = [] }) {
     const video = videoRef.current;
     if (!video) return undefined;
     setAutoplayBlocked(false);
-    const attempt = () => video.play().catch(() => setAutoplayBlocked(true));
+    setMediaFailed(false);
+    let cancelled = false;
+    const attempt = () => {
+      if (cancelled) return;
+      video.play().then(() => setAutoplayBlocked(false)).catch(() => setAutoplayBlocked(true));
+    };
     if (video.readyState >= 2) attempt();
     else video.addEventListener('canplay', attempt, { once: true });
-    return () => video.removeEventListener('canplay', attempt);
+    return () => {
+      cancelled = true;
+      video.removeEventListener('canplay', attempt);
+    };
   }, [current?.id, current?.media_type]);
 
   if (!current) {
     return (
-      <section className="publicite-video-section" aria-labelledby="publicite-video-title">
-        <div className="publicite-video-heading">
-          <div>
-            <p className="eyebrow">BAM TV SN · ESPACE PUBLICITAIRE</p>
-            <h2 id="publicite-video-title">Publicités en diffusion automatique</h2>
-            <p>Aucun média n’est encore programmé. Les annonces ajoutées par l’administration apparaîtront ici.</p>
-          </div>
-        </div>
-        <div className="publicite-playlist-empty">La playlist publicitaire est en attente de médias.</div>
+      <section className={`publicite-video-section ${isHero ? 'publicite-playlist-hero' : ''}`} aria-label="Espace publicitaire">
+        {!isHero && <div className="publicite-video-heading"><div><p className="eyebrow">BAM TV SN · ESPACE PUBLICITAIRE</p><h2>Publicités en diffusion automatique</h2><p>Les annonces ajoutées par l’administration apparaîtront ici.</p></div></div>}
+        <div className="publicite-playlist-empty">Aucune publicité active pour le moment.</div>
       </section>
     );
   }
 
+  const contactHref = whatsappHref(current.whatsapp_phone, current.title);
+
   return (
-    <section className="publicite-video-section" aria-labelledby="publicite-video-title">
-      <div className="publicite-video-heading">
-        <div>
-          <p className="eyebrow">BAM TV SN · ESPACE PUBLICITAIRE</p>
-          <h2 id="publicite-video-title">Publicités en diffusion automatique</h2>
-          <p>Les annonces publiées par l’administration s’enchaînent sans intervention des visiteurs.</p>
-        </div>
+    <section className={`publicite-video-section ${isHero ? 'publicite-playlist-hero' : ''}`} aria-label="Publicités en diffusion automatique">
+      {!isHero && <div className="publicite-video-heading">
+        <div><p className="eyebrow">BAM TV SN · ESPACE PUBLICITAIRE</p><h2>Publicités en diffusion automatique</h2><p>Les annonces publiées par l’administration s’enchaînent sans intervention des visiteurs.</p></div>
         <span className="publicite-playlist-count">{index + 1} / {items.length}</span>
-      </div>
+      </div>}
       <div className="publicite-playlist-frame">
         {current.media_type === 'video' ? (
           <video
@@ -80,6 +89,7 @@ export default function AdvertisementPlaylist({ ads = [] }) {
             autoPlay
             muted
             playsInline
+            loop={false}
             preload="auto"
             controls={false}
             onEnded={advance}
@@ -87,25 +97,17 @@ export default function AdvertisementPlaylist({ ads = [] }) {
             aria-label={current.title}
           />
         ) : (
-          <img
-            key={current.id}
-            className="publicite-playlist-media"
-            src={current.media_url}
-            alt={current.title}
-            onError={advance}
-          />
+          <img key={current.id} className="publicite-playlist-media" src={current.media_url} alt={current.title} onError={advance} />
         )}
-        <div className="publicite-playlist-label">
-          <span>PUBLICITÉ</span>
+        {!mediaFailed && <div className="publicite-playlist-label">
+          <span>PUBLICITÉ {items.length > 1 ? `· ${index + 1}/${items.length}` : ''}</span>
           <strong>{current.title}</strong>
-        </div>
+          {contactHref && <a className="publicite-playlist-whatsapp" href={contactHref} target="_blank" rel="noopener noreferrer">Contacter sur WhatsApp</a>}
+        </div>}
+        {mediaFailed && <div className="publicite-playlist-failed">Média momentanément indisponible.</div>}
       </div>
-      {autoplayBlocked && (
-        <p className="publicite-playlist-note" role="status">
-          La lecture automatique est bloquée par les réglages du navigateur. Les vidéos sont configurées en lecture muette et sans clic.
-        </p>
-      )}
-      <p className="publicite-video-caption">Diffusion automatique · {items.length} annonce(s) active(s)</p>
+      {autoplayBlocked && <p className="publicite-playlist-note" role="status">Le navigateur bloque la lecture automatique. La vidéo est pourtant configurée sans son et sans clic.</p>}
+      {!isHero && <p className="publicite-video-caption">Diffusion automatique · {items.length} annonce(s) active(s)</p>}
     </section>
   );
 }
