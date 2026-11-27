@@ -6,7 +6,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
-    "doctor": "expo-doctor",
+    "doctor": "npx expo-doctor",
     "apk": "eas build --platform android --profile preview",
     "aab": "eas build --platform android --profile production"
   },
@@ -22,8 +22,7 @@
     "react-native": "0.88.1",
     "react-native-safe-area-context": "~5.6.2",
     "react-native-screens": "~4.16.0",
-    "react-native-url-polyfill": "^2.0.0",
-    "@native-html/render": "^1.0.4"
+    "react-native-url-polyfill": "^2.0.0"
   },
   "devDependencies": {
     "@types/react": "~19.3.0",
