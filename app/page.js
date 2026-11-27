@@ -1,14 +1,10 @@
 import Link from 'next/link';
 import { getArticles, getVideos, videoThumbnail } from '@/lib/content';
 import ArticleCover from '@/components/ArticleCover';
+import HomeHero from '@/components/HomeHero';
 
 export const dynamic = 'force-dynamic';
 
-const navItems = [
-  ['Actualités','/actualites'],['Politique','/actualites?categorie=politique'],
-  ['Économie','/actualites?categorie=economie'],['Sport','/actualites?categorie=sport'],
-  ['Culture','/actualites?categorie=culture'],['Monde','/actualites?categorie=international'],
-];
 
 function dailyVideoSelection(items) {
   const cutoff = new Date();
@@ -34,26 +30,7 @@ export default async function HomePage() {
   const trendingVideos = dailyVideoSelection(videos);
   return (
     <div className="reference-home">
-      <header className="reference-masthead">
-        <div className="reference-masthead-glow" aria-hidden="true" />
-        <Link href="/" aria-label="BAM TV SN - Accueil" className="reference-logo-link">
-          <img src="/bam-tv-sn-logo.svg" alt="Logo BAM TV SN" />
-        </Link>
-      </header>
-
-      <nav className="reference-nav" aria-label="Rubriques principales">
-        <div className="reference-nav-inner">
-          <div className="reference-nav-links">
-            {navItems.map(([label,href],i)=><Link key={label} href={href} className={i===0?'selected':''}>{label}</Link>)}
-            <Link href="/videos">Vidéos</Link>
-            <Link href="/direct" className="reference-live">En direct</Link>
-          </div>
-          <div className="reference-nav-tools">
-            <form action="/recherche" method="get" className="reference-search"><span aria-hidden="true">⌕</span><input name="q" placeholder="Rechercher..." aria-label="Rechercher" /></form>
-            <Link className="reference-login" href="/admin">Se connecter</Link>
-          </div>
-        </div>
-      </nav>
+      <HomeHero headlines={articles.slice(0,8).map(article => ({ title: article.title, time: article.published_at ? new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit'}).format(new Date(article.published_at)) : '—' }))} />
 
       <main className="reference-main">
         <div className="reference-content-grid">
