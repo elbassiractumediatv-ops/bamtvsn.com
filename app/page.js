@@ -9,11 +9,6 @@ export const dynamic = 'force-dynamic';
 
 const youtubeChannel = 'https://www.youtube.com/@BAMTVSN';
 
-function formatDate(value) {
-  if (!value) return 'BAM TV SN';
-  return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'long' }).format(new Date(value));
-}
-
 export default async function HomePage() {
   const [articles, videos, emissions] = await Promise.all([
     getArticles(100).catch(() => []),
@@ -52,14 +47,9 @@ export default async function HomePage() {
         <section className="home-lead wrap" aria-label="À la une">
           <Link href={`/actualites/${lead.slug}`} className="home-lead-image">
             <img src={lead.cover_url || articleBanner(lead)} alt={lead.title} />
-            <span className="home-lead-tag">{lead.category?.name || 'À la une'}</span>
           </Link>
           <div className="home-lead-copy">
-            <p className="eyebrow">Le choix de la rédaction</p>
             <h2><Link href={`/actualites/${lead.slug}`}>{lead.title}</Link></h2>
-            {lead.excerpt && <p>{lead.excerpt}</p>}
-            <span className="meta">{formatDate(lead.published_at)}</span>
-            <Link className="home-read-link" href={`/actualites/${lead.slug}`}>Lire l’article <span aria-hidden="true">→</span></Link>
           </div>
         </section>
       ) : (
