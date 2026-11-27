@@ -43,3 +43,22 @@ Projet lié : `thevryhybiloqddnoeof`. Lecture seule des tables `articles` et `vi
 - Logo original en icône Android et écran de démarrage.
 - Tests réels sur plusieurs téléphones, RLS, performances, liens et lecture vidéo.
 - Notifications push et configuration Play Console.
+
+## Architecture de sécurité
+- L'application mobile est un client public : toute variable `EXPO_PUBLIC_*` est intégrée au binaire et visible par un utilisateur. La clé autorisée est uniquement la clé publique Supabase publishable/anon.
+- Aucun secret serveur, clé `service_role`, mot de passe administrateur ou jeton privé ne doit être ajouté au dépôt ou au binaire.
+- Les requêtes sont limitées aux contenus publiés et l'application ne propose aucune opération d'écriture sur Supabase.
+- La vraie frontière de sécurité reste PostgreSQL/RLS et les privilèges du projet Supabase. Le client mobile ne peut pas rendre une table sûre si les politiques RLS sont incorrectes.
+- Les favoris restent sur l'appareil. Aucun compte lecteur ni donnée personnelle n'est collecté dans cette première version.
+- Les liens externes ouvrent YouTube ou le site dans l'application correspondante ; aucune page web arbitraire n'est exécutée dans une WebView.
+
+## Contrôles avant une version publique
+Depuis ce dossier :
+```bash
+npm install
+npx expo install --fix
+npm run typecheck
+npx expo-doctor
+npm audit --omit=dev
+```
+Ces contrôles doivent être exécutés et leurs éventuelles alertes corrigées avant les builds finaux. Une compilation réussie ne remplace pas un test sur appareils Android réels ni une vérification des règles RLS.
