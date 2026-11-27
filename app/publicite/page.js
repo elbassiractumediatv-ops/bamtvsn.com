@@ -1,11 +1,22 @@
 import Link from 'next/link';
+import { getVideos } from '@/lib/content';
 
 export const metadata = {
   title: 'Publicité | BAM TV SN',
   description: 'Découvrez les annonces et offres publicitaires diffusées sur BAM TV SN.',
 };
 
-export default function PublicitePage() {
+export default async function PublicitePage() {
+  const videos = await getVideos(12).catch(() => []);
+  const playlistIds = videos
+    .map((video) => video.youtube_id)
+    .filter((id) => /^[A-Za-z0-9_-]{11}$/.test(id || ''));
+  const firstVideoId = playlistIds[0];
+  const playlist = playlistIds.join(',');
+  const playlistUrl = firstVideoId
+    ? `https://www.youtube-nocookie.com/embed/${firstVideoId}?playlist=${encodeURIComponent(playlist)}&autoplay=1&mute=1&loop=1&playsinline=1&rel=0&modestbranding=1`
+    : null;
+
   return (
     <main className="publicite-page">
       <section className="publicite-intro">
@@ -13,6 +24,30 @@ export default function PublicitePage() {
         <h1>Publicités et annonces partenaires</h1>
         <p>Retrouvez ici les offres et annonces présentées par nos partenaires. Pour proposer votre propre publicité, contactez notre équipe ou préparez une annonce depuis l’administration.</p>
       </section>
+
+      {playlistUrl && (
+        <section className="publicite-video-section" aria-labelledby="publicite-video-title">
+          <div className="publicite-video-heading">
+            <div>
+              <p className="eyebrow">BAM TV SN · VIDÉOS</p>
+              <h2 id="publicite-video-title">Nos vidéos défilent automatiquement</h2>
+              <p>Le lecteur enchaîne les vidéos publiées sur la chaîne. Le son démarre coupé pour permettre la lecture automatique ; vous pouvez l’activer directement dans le lecteur.</p>
+            </div>
+            <Link href="/videos">Toutes les vidéos →</Link>
+          </div>
+          <div className="publicite-video-player">
+            <iframe
+              src={playlistUrl}
+              title="Playlist vidéo BAM TV SN"
+              loading="eager"
+              allow="autoplay; encrypted-media; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </div>
+          <p className="publicite-video-caption">{videos.length} vidéo(s) publiée(s) disponibles dans la sélection automatique.</p>
+        </section>
+      )}
 
       <section className="publicite-list" aria-labelledby="iptv-ad-title">
         <article className="publicite-ad-card">
