@@ -1,18 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1515 696" role="img" aria-labelledby="title desc">
-<title id="title">BAM TV SN</title><desc id="desc">Logo circulaire vert et blanc BAM, avec badge rouge Tv SN.</desc>
-<defs>
- <radialGradient id="green" cx="35%" cy="25%" r="80%"><stop offset="0" stop-color="#39c66a"/><stop offset=".48" stop-color="#087a39"/><stop offset="1" stop-color="#03451f"/></radialGradient>
- <linearGradient id="rim" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".48" stop-color="#dff7e7"/><stop offset="1" stop-color="#8bc99d"/></linearGradient>
- <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur in="SourceAlpha" stdDeviation="16"/><feOffset dy="12"/><feComponentTransfer><feFuncA type="linear" slope=".35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-</defs>
-<g filter="url(#shadow)" transform="translate(507 8)">
- <circle cx="250" cy="340" r="270" fill="#063b20" opacity=".5"/>
- <circle cx="250" cy="320" r="260" fill="url(#green)" stroke="#fff" stroke-width="16"/>
- <circle cx="250" cy="320" r="238" fill="none" stroke="#9be7b3" stroke-width="5" opacity=".75"/>
- <ellipse cx="250" cy="290" rx="220" ry="112" fill="url(#rim)" stroke="#fff" stroke-width="10"/>
- <ellipse cx="250" cy="290" rx="205" ry="97" fill="#075b2d"/>
- <text x="250" y="330" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="126" fill="#fff">BAM</text>
- <circle cx="433" cy="423" r="91" fill="#c91e2b" stroke="#fff" stroke-width="12"/>
- <text x="433" y="420" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="62" fill="#fff">Tv</text>
- <text x="433" y="466" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="34" fill="#fff">SN</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1536 922" role="img" aria-labelledby="title desc">
+<title id="title">Logo officiel BAM TV SN</title><desc id="desc">Logo vert ovale BAM avec lettres blanches et pastille rouge Tv SN.</desc>
+<g>
+<ellipse cx="768" cy="461" rx="746" ry="382" fill="#006536" stroke="#fff" stroke-width="22"/>
+<ellipse cx="768" cy="461" rx="711" ry="346" fill="none" stroke="#fff" stroke-width="23"/>
+<text x="770" y="598" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="520" font-weight="bold" fill="#fff" letter-spacing="-22">BAM</text>
+<circle cx="1174" cy="735" r="148" fill="#ed1c24"/>
+<text x="1174" y="748" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="116" font-weight="bold" fill="#fff">Tv</text>
+<text x="1174" y="842" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="76" fill="#fff">SN</text>
 </g></svg>
