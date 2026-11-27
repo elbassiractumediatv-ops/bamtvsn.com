@@ -19,9 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: android-app/package-lock.json
       - run: npm install --no-audit
-      - run: npx expo install --fix --check
+      - run: npx expo install --check
       - run: npm run typecheck
       - run: npx expo-doctor
