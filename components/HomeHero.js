@@ -6,20 +6,26 @@ const channels = [
   { label: 'TikTok', href: 'https://www.tiktok.com/' },
 ];
 
+const navigation = [
+  { label: 'Accueil', href: '/' },
+  { label: 'Actualités', href: '/actualites' },
+  { label: 'Vidéos', href: '/videos' },
+  { label: 'Publicité', href: '/publicite' },
+  { label: 'Contact', href: '/contact' },
+];
+
 export default function HomeHero({ headlines = [] }) {
+  const news = headlines.length ? headlines : [{ time: 'BAM TV SN', title: 'Retrouvez toute l’actualité sur BAM TV SN' }];
   return (
     <>
-      <div className="bam-breaking" aria-label="En bref">
-        <strong>En bref</strong>
-        <div className="bam-breaking-window">
-          <div className="bam-breaking-track">
-            {[...headlines, ...headlines].map((item, index) => (
-              <span key={index}><b>{item.time}</b> {item.title}</span>
-            ))}
-          </div>
-        </div>
-      </div>
       <section className="bam-brand-hero" aria-labelledby="bam-hero-title">
+        <nav className="bam-hero-nav" aria-label="Navigation principale">
+          <Link href="/" className="bam-nav-brand"><img src="/bam-tv-sn-logo.svg" alt="BAM TV SN" /></Link>
+          <div className="bam-nav-links">
+            {navigation.map(item => <Link key={item.href} href={item.href}>{item.label}</Link>)}
+            <Link href="/direct" className="bam-nav-direct"><i /> Direct</Link>
+          </div>
+        </nav>
         <div className="bam-hero-light" aria-hidden="true" />
         <svg className="bam-dakar-silhouette" viewBox="0 0 900 250" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
           <g fill="#002d20" opacity=".82">
@@ -50,6 +56,16 @@ export default function HomeHero({ headlines = [] }) {
         </div>
         <div className="bam-flag-waves" aria-hidden="true"><i /><i /><i /></div>
       </section>
+      <div className="bam-breaking" aria-label="En bref">
+        <strong>En bref</strong>
+        <div className="bam-breaking-window">
+          <div className="bam-breaking-track">
+            {[...news, ...news].map((item, index) => (
+              <span key={index}><b>{item.time}</b> {item.title}</span>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }
