@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 function whatsappHref(phone, title) {
-  const digits = String(phone || '').replace(/\D/g, '');
-  if (!/^\d{8,15}$/.test(digits)) return null;
+  const digits = String(phone || '').replace(/\\D/g, '');
+  if (!/^\\d{8,15}$/.test(digits)) return null;
   const message = encodeURIComponent(`Bonjour, je vous contacte depuis BAM TV SN au sujet de votre publicité : ${title}.`);
   return `https://wa.me/${digits}?text=${message}`;
 }
@@ -16,6 +16,7 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
   ), [ads]);
   const [index, setIndex] = useState(0);
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
   const [mediaFailed, setMediaFailed] = useState(false);
   const videoRef = useRef(null);
   const current = items[index] || null;
@@ -25,6 +26,7 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
     if (items.length > 1) {
       setMediaFailed(false);
       setAutoplayBlocked(false);
+      setSoundEnabled(false);
       setIndex((value) => (value + 1) % items.length);
     } else {
       setMediaFailed(true);
@@ -47,20 +49,52 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
     if (!current || current.media_type !== 'video') return undefined;
     const video = videoRef.current;
     if (!video) return undefined;
-    setAutoplayBlocked(false);
-    setMediaFailed(false);
     let cancelled = false;
-    const attempt = () => {
+    setAutoplayBlocked(false);
+    setSoundEnabled(false);
+    setMediaFailed(false);
+
+    const start = async () => {
       if (cancelled) return;
-      video.play().then(() => setAutoplayBlocked(false)).catch(() => setAutoplayBlocked(true));
+      // Try audible autoplay first. Browsers may reject it until the visitor interacts.
+      video.muted = false;
+      try {
+        await video.play();
+        if (!cancelled) setSoundEnabled(true);
+      } catch {
+        if (cancelled) return;
+        // Keep the playlist moving automatically when audible autoplay is blocked.
+        video.muted = true;
+        try {
+          await video.play();
+          if (!cancelled) setAutoplayBlocked(true);
+        } catch {
+          if (!cancelled) setAutoplayBlocked(true);
+        }
+      }
     };
-    if (video.readyState >= 2) attempt();
-    else video.addEventListener('canplay', attempt, { once: true });
+
+    if (video.readyState >= 2) start();
+    else video.addEventListener('canplay', start, { once: true });
     return () => {
       cancelled = true;
-      video.removeEventListener('canplay', attempt);
+      video.removeEventListener('canplay', start);
     };
   }, [current?.id, current?.media_type]);
+
+  const enableSound = async () => {
+    const video = videoRef.current;
+    if (!video) return;
+    try {
+      video.muted = false;
+      video.volume = 1;
+      await video.play();
+      setSoundEnabled(true);
+      setAutoplayBlocked(false);
+    } catch {
+      setSoundEnabled(false);
+    }
+  };
 
   if (!current) {
     return (
@@ -87,7 +121,6 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
             className="publicite-playlist-media"
             src={current.media_url}
             autoPlay
-            muted
             playsInline
             loop={false}
             preload="auto"
@@ -100,13 +133,16 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
           <img key={current.id} className="publicite-playlist-media" src={current.media_url} alt={current.title} onError={advance} />
         )}
         {!mediaFailed && <div className="publicite-playlist-label">
-          <span>PUBLICITÉ {items.length > 1 ? `· ${index + 1}/${items.length}` : ''}</span>
+          <span>ANNONCE {items.length > 1 ? `· ${index + 1}/${items.length}` : ''}</span>
           <strong>{current.title}</strong>
-          {contactHref && <a className="publicite-playlist-whatsapp" href={contactHref} target="_blank" rel="noopener noreferrer">Contacter sur WhatsApp</a>}
         </div>}
+        {current.media_type === 'video' && !soundEnabled && (
+          <button type="button" className="publicite-playlist-sound" onClick={enableSound} aria-label="Activer le son de la publicité">Activer le son</button>
+        )}
+        {contactHref && <a className="publicite-playlist-whatsapp" href={contactHref} target="_blank" rel="noopener noreferrer">WhatsApp · {current.title}</a>}
         {mediaFailed && <div className="publicite-playlist-failed">Média momentanément indisponible.</div>}
       </div>
-      {autoplayBlocked && <p className="publicite-playlist-note" role="status">Le navigateur bloque la lecture automatique. La vidéo est pourtant configurée sans son et sans clic.</p>}
+      {autoplayBlocked && <p className="publicite-playlist-note" role="status">Le navigateur a bloqué le son automatique. La vidéo continue ; appuyez une fois sur « Activer le son » pour autoriser le son pendant la diffusion.</p>}
       {!isHero && <p className="publicite-video-caption">Diffusion automatique · {items.length} annonce(s) active(s)</p>}
     </section>
   );
