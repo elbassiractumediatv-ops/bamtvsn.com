@@ -41,9 +41,6 @@ export default function HomeHero({ headlines = [], ads = [] }) {
           </g>
         </svg>
         <div className="bam-hero-inner">
-          <Link href="/" className="bam-hero-desktop-brand" aria-label="BAM TV SN — Accueil">
-            <img src="/bam-tv-sn-logo.svg" alt="BAM TV SN" />
-          </Link>
           <div className="bam-hero-copy">
             <span className="bam-hero-kicker">Vous suivez</span>
             <h1 id="bam-hero-title">BAM TV SN</h1>
