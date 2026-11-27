@@ -38,7 +38,7 @@ async function validImageSignature(file, mime) {
 
 export async function requestPasswordResetAction(form) {
   const email = val(form, 'email');
-  if (!email || !within(email, 254) || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+  if (!email || !within(email, 254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     redirect('/admin/forgot-password?error=invalid');
   }
   const { supabase } = await getAdminUser();
