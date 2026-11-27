@@ -142,9 +142,11 @@
 .header-search{flex:0 0 36px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#f1f6f2;color:#075b37;font-size:25px;font-weight:800}
 .home-ticker{background:#fff;color:#24382c;border:1px solid #e8eee9;overflow:hidden;gap:0;padding:0 max(14px,calc((100% - 1160px)/2))}
 .home-ticker-label{background:#d62d32;color:#fff;min-height:46px;padding:0 19px;font-size:12px;flex:0 0 auto}
-.home-ticker p{flex:0 0 auto;max-width:none;overflow:visible;text-overflow:clip;white-space:nowrap;padding-left:22px;color:#263b2e;animation:bamTickerScroll 28s linear infinite}
-.home-ticker:hover p{animation-play-state:paused}
-@keyframes bamTickerScroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.home-ticker-marquee{min-width:0;flex:1;overflow:hidden;white-space:nowrap}
+.home-ticker-track{display:flex;width:max-content;animation:bamTickerLoop 28s linear infinite}
+.home-ticker-track span{flex:0 0 auto;padding:0 26px;color:#263b2e;font-size:13px;font-weight:700}
+.home-ticker:hover .home-ticker-track{animation-play-state:paused}
+@keyframes bamTickerLoop{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media(max-width:900px){
  .header-bottom-inner{flex-wrap:wrap;gap:7px;padding-top:8px;padding-bottom:8px}
  .main-nav{flex:1 1 100%;overflow-x:auto;scrollbar-width:none}
@@ -166,5 +168,5 @@
  .header-search{width:30px;height:30px;flex-basis:30px;font-size:21px}
  .home-ticker{min-height:42px;padding:0 0}
  .home-ticker-label{min-height:42px;padding:0 12px;font-size:10px}
- .home-ticker p{font-size:11px;padding-left:14px;animation-duration:22s}
+ .home-ticker-track span{font-size:11px;padding:0 16px}.home-ticker-track{animation-duration:22s}
 }
