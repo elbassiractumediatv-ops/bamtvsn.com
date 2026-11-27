@@ -1,9 +1,12 @@
-import Link from 'next/link';
+import HomeLiveAndAds from '@/components/HomeLiveAndAds';
 
 export const metadata = {
   title: 'En direct',
-  description: 'Retrouvez le direct et les contenus vidéo de BAM TV SN.',
+  description: 'Regardez le direct vidéo de BAM TV SN et retrouvez notre chaîne YouTube officielle.',
 };
+
+const CHANNEL_ID = 'UC7VnuAmqfg2ZFXcP4VozLyw';
+const CHANNEL_URL = 'https://www.youtube.com/channel/' + CHANNEL_ID;
 
 export default function DirectPage() {
   return (
@@ -13,13 +16,14 @@ export default function DirectPage() {
           <div><p className="eyebrow">BAM TV SN</p><h1>En direct</h1></div>
         </div>
         <div className="direct-page-panel">
-          <div className="direct-screen"><span className="direct-screen-mark">BAM TV <b>SN</b></span><span className="direct-screen-play">▶</span><p>ESPACE DIRECT</p></div>
+          <div className="direct-page-player">
+            <HomeLiveAndAds ads={[]} showAds={false} showChannelLink={false} />
+          </div>
           <div className="direct-page-copy">
             <p className="eyebrow">Notre antenne</p>
             <h2>Suivez BAM TV SN sur YouTube</h2>
-            <p>Lorsqu’une diffusion est programmée, retrouvez ici les informations du direct. En attendant, accédez à notre chaîne pour revoir les reportages, interviews et émissions.</p>
-            <a className="button" href="https://www.youtube.com/@BAMTVSN" target="_blank" rel="noopener noreferrer">Ouvrir la chaîne YouTube ↗</a>
-            <p className="direct-status-note">Aucune diffusion en direct n’est confirmée sur cette page pour le moment.</p>
+            <p>Retrouvez ici le lecteur vidéo de BAM TV SN. Lorsqu’une diffusion est en cours, elle s’affiche dans ce lecteur. Vous pouvez également ouvrir notre chaîne officielle pour revoir nos reportages, interviews et émissions.</p>
+            <a className="button" href={CHANNEL_URL} target="_blank" rel="noopener noreferrer">Ouvrir la chaîne YouTube ↗</a>
           </div>
         </div>
       </div>
