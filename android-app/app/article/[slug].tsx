@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RenderHtml from '@native-html/render';
 import {Page,Busy,Empty,COLORS} from '../../components/UI';
 import {getArticleBySlug} from '../../lib/api';
-
 function articleToHtml(raw:string){
  const value=(raw||'').trim();
  if(/<(p|h[1-6]|ul|ol|li|div|blockquote|br|strong|em)\b/i.test(value)) return value;
