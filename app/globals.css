@@ -544,3 +544,46 @@ body:has(.reference-home) .site-header{display:none!important}
  .bam-hero-nav{width:calc(100% - 24px)}
  .bam-nav-brand img{width:78px!important;height:42px!important}
 }
+
+/* Ajustement fin de la bannière : logo et identité décalés à gauche, espace annonce agrandi */
+.bam-hero-inner{
+  width:min(1280px,calc(100% - 24px));
+  max-width:1280px;
+  grid-template-columns:minmax(175px,205px) minmax(0,1fr) minmax(260px,290px);
+  column-gap:clamp(18px,2.2vw,32px);
+}
+.bam-hero-logo-wrap{justify-content:flex-start;transform:translateX(-8px)}
+.bam-hero-logo{max-width:205px}
+.bam-hero-copy{transform:translateX(-18px)}
+.bam-hero-ad{
+  max-width:290px;
+  min-height:158px;
+  padding:24px 20px;
+  gap:11px;
+}
+.bam-hero-ad strong{font-size:17px}
+.bam-hero-ad span{font-size:13px}
+.bam-hero-ad b{font-size:12px;padding:10px 17px}
+@media(max-width:850px){
+ .bam-hero-inner{width:calc(100% - 22px);grid-template-columns:130px minmax(0,1fr);column-gap:14px}
+ .bam-hero-logo-wrap,.bam-hero-copy{transform:none}
+ .bam-hero-logo{max-width:130px}
+ .bam-hero-ad{max-width:230px;min-height:88px;padding:12px;margin-top:8px}
+ .bam-hero-ad strong{font-size:13px}
+ .bam-hero-ad span{font-size:11px}
+ .bam-hero-ad b{font-size:10px;padding:7px 12px}
+}
+@media(max-width:520px){
+ .bam-hero-inner{width:calc(100% - 24px);grid-template-columns:86px minmax(0,1fr);column-gap:10px}
+ .bam-hero-logo{width:86px;max-width:86px}
+ .bam-hero-copy{transform:translateX(-4px)}
+ .bam-hero-ad{grid-column:2;max-width:205px;min-height:78px}
+}
+.publicite-page{width:min(900px,calc(100% - 32px));margin:56px auto 76px}
+.publicite-card{padding:clamp(24px,5vw,48px);border-radius:18px;background:linear-gradient(140deg,#075b37,#087344);color:#fff;box-shadow:0 18px 50px #063c2925}
+.publicite-card h1{font:900 clamp(30px,5vw,46px)/1.12 Manrope,sans-serif;margin:8px 0 16px}
+.publicite-card p{line-height:1.75;color:#e2f0e8;max-width:680px}
+.publicite-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.publicite-actions a{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:7px;background:#fff;color:#075b37;font-weight:800}
+.publicite-actions a.secondary{background:#d62d32;color:#fff}
+.publicite-note{margin-top:22px;padding:16px;border:1px solid #ffffff55;border-radius:10px;color:#e6f3eb;font-size:13px}
