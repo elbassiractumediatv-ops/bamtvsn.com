@@ -18,10 +18,10 @@ Application React Native / Expo connectée en lecture seule au projet Supabase e
 4. Dans ce dossier, exécuter npm install, npx expo install --fix, npx expo-doctor puis npx expo start.
 
 ## Builds Android
-- APK de test : npm run apk
-- AAB Google Play : npm run aab
+- APK de test : le workflow GitHub Actions produit automatiquement un APK debug nommé BAM-TV-SN-APK-test après validation. Il est signé avec la clé debug Android et convient aux essais internes, pas à une publication Play Store.
+- AAB de publication : npm run aab via Expo EAS. Un compte Expo/EAS et la configuration du projet EAS sont nécessaires.
 
-Un compte Expo/EAS connecté est nécessaire pour lancer les builds cloud. Le build doit ensuite être installé et testé sur un vrai téléphone.
+L'APK de test doit être installé sur un vrai téléphone et les parcours doivent être validés avant la préparation de l'AAB de production.
 
 ## Sécurité et limites
 Les tables articles et videos sont lues avec le filtre status = published. La clé embarquée doit être une clé publique anon/publishable et l'accès repose sur les politiques RLS Supabase. Aucun changement SQL n'est effectué.
