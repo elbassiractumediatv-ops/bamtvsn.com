@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getArticles, getVideos, videoThumbnail } from '@/lib/content';
 import ArticleCover from '@/components/ArticleCover';
 import HomeHero from '@/components/HomeHero';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,16 +22,18 @@ function dateLabel(value) {
 }
 
 export default async function HomePage() {
-  const [articles, videos] = await Promise.all([
+  const supabase = await createServerSupabaseClient();
+  const [articles, videos, advertisements] = await Promise.all([
     getArticles(12).catch(() => []),
     getVideos(100).catch(() => []),
+    supabase.from('advertisements').select('id,title,media_url,media_type,duration_seconds,position,whatsapp_phone').eq('is_active', true).order('position', { ascending: true }).order('created_at', { ascending: true }).then(({ data }) => data || []).catch(() => []),
   ]);
   const latest = articles.slice(0,6);
   const trends = [...articles].sort((a,b) => (b.views || 0) - (a.views || 0)).slice(0,3);
   const trendingVideos = dailyVideoSelection(videos);
   return (
     <div className="reference-home">
-      <HomeHero headlines={articles.slice(0,8).map(article => ({ title: article.title, time: article.published_at ? new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit'}).format(new Date(article.published_at)) : '—' }))} />
+      <HomeHero headlines={articles.slice(0,8).map(article => ({ title: article.title, time: article.published_at ? new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit'}).format(new Date(article.published_at)) : '—' }))} ads={advertisements} />
 
       <main className="reference-main">
         <div className="reference-content-grid">

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { requireAdmin } from '@/lib/admin';
-import { deleteAdvertisementAction, toggleAdvertisementAction } from '../actions';
+import { deleteAdvertisementAction, toggleAdvertisementAction, updateAdvertisementWhatsappAction } from '../actions';
 import AdvertisementUploadForm from '@/components/AdvertisementUploadForm';
 
 export const dynamic = 'force-dynamic';
@@ -10,7 +10,7 @@ export default async function AdminAdvertisementsPage({ searchParams }) {
   const params = await searchParams;
   const { data: ads, error } = await supabase
     .from('advertisements')
-    .select('id,title,media_url,media_type,mime_type,duration_seconds,position,is_active,created_at')
+    .select('id,title,media_url,media_type,mime_type,duration_seconds,position,is_active,created_at,whatsapp_phone')
     .order('position', { ascending: true })
     .order('created_at', { ascending: true });
 
@@ -29,6 +29,8 @@ export default async function AdminAdvertisementsPage({ searchParams }) {
         {params.created === '1' && <div className="notice success">Média ajouté à la playlist et publié.</div>}
         {params.updated === '1' && <div className="notice success">État de la publicité mis à jour.</div>}
         {params.deleted === '1' && <div className="notice success">Publicité supprimée de la playlist.</div>}
+        {params.contact === 'updated' && <div className="notice success">Le contact WhatsApp de la publicité a été enregistré.</div>}
+        {params.error === 'contact' && <div className="notice">Numéro WhatsApp invalide ou mise à jour impossible.</div>}
         {params.error === 'media' && <div className="notice">Fichier refusé. Utilisez une image JPG, PNG, WEBP, GIF ou une vidéo MP4 / WebM de 50 Mo maximum.</div>}
         {params.error === 'upload' && <div className="notice">L’envoi du média a échoué. Vérifiez le stockage publicitaire et réessayez.</div>}
         {params.error === 'save' && <div className="notice">Le média a été envoyé, mais son enregistrement a échoué. Réessayez ou contactez l’administrateur technique.</div>}
@@ -49,6 +51,14 @@ export default async function AdminAdvertisementsPage({ searchParams }) {
               <div className="admin-advertisement-info">
                 <strong>{ad.title}</strong>
                 <span>{ad.media_type === 'video' ? 'Vidéo' : 'Image'} · Position {ad.position + 1}{ad.media_type === 'image' ? ` · ${ad.duration_seconds}s` : ''}</span>
+                <span>{ad.whatsapp_phone ? `WhatsApp : ${ad.whatsapp_phone}` : 'Aucun contact WhatsApp associé'}</span>
+                <form action={updateAdvertisementWhatsappAction} className="admin-ad-contact-form">
+                  <input type="hidden" name="id" value={ad.id} />
+                  <label>WhatsApp annonceur
+                    <input name="whatsapp_phone" type="tel" inputMode="numeric" pattern="[0-9+ ()-]{8,20}" defaultValue={ad.whatsapp_phone || ''} placeholder="2217XXXXXXXX" />
+                  </label>
+                  <button className="plain-button" type="submit">Enregistrer le contact</button>
+                </form>
                 <span className={ad.is_active ? 'admin-ad-status active' : 'admin-ad-status paused'}>{ad.is_active ? 'En diffusion' : 'En pause'}</span>
               </div>
               <div className="admin-advertisement-actions">

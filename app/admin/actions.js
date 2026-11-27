@@ -184,13 +184,15 @@ export async function saveAdvertisementAction(input) {
   const path = String(input?.path || '');
   const mimeType = String(input?.mimeType || '');
   const mediaType = String(input?.mediaType || '');
+  const whatsappPhone = String(input?.whatsappPhone || '').replace(/[^0-9]/g, '');
   const allowed = ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'];
   const filename = path.split('/').pop();
   if (title.length < 2 || !within(title, 120) || path.split('/').length !== 2 ||
       path.split('/')[0] !== 'playlist' ||
       !/^[0-9]+-[0-9a-f-]+[.](jpg|png|webp|gif|mp4|webm)$/i.test(filename) ||
       !allowed.includes(mimeType) || !['image','video'].includes(mediaType) ||
-      (mediaType === 'video') !== mimeType.startsWith('video/')) return { ok: false, error: 'invalid' };
+      (mediaType === 'video') !== mimeType.startsWith('video/') ||
+      (whatsappPhone && !/^\d{8,15}$/.test(whatsappPhone))) return { ok: false, error: 'invalid' };
   const duration = mediaType === 'image' ? Number(input?.durationSeconds) : 8;
   if (!Number.isInteger(duration) || duration < 5 || duration > 60) return { ok: false, error: 'invalid' };
   const { data: files, error: listError } = await supabase.storage.from('publicites').list('playlist', { search: filename, limit: 20 });
@@ -201,11 +203,29 @@ export async function saveAdvertisementAction(input) {
   const { error } = await supabase.from('advertisements').insert({
     title, media_url: publicUrl.publicUrl, media_path: path, media_type: mediaType,
     mime_type: mimeType, duration_seconds: duration, position, is_active: true, created_by: user.id,
+    whatsapp_phone: whatsappPhone || null,
   });
   if (error) return { ok: false, error: 'save' };
   revalidatePath('/publicite');
   revalidatePath('/admin/publicites');
   return { ok: true };
+}
+
+export async function updateAdvertisementWhatsappAction(form) {
+  const { supabase } = await requireAdmin();
+  const id = val(form, 'id');
+  const whatsappPhone = val(form, 'whatsapp_phone').replace(/[^0-9]/g, '');
+  if (!validUuid(id) || (whatsappPhone && !/^\d{8,15}$/.test(whatsappPhone))) {
+    redirect('/admin/publicites?error=contact');
+  }
+  const { error } = await supabase.from('advertisements')
+    .update({ whatsapp_phone: whatsappPhone || null, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) redirect('/admin/publicites?error=contact');
+  revalidatePath('/');
+  revalidatePath('/publicite');
+  revalidatePath('/admin/publicites');
+  redirect('/admin/publicites?contact=updated');
 }
 
 export async function toggleAdvertisementAction(form) {
