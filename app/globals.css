@@ -792,3 +792,72 @@ body:has(.reference-home) .site-header{display:none!important}
 .admin-ad-contact-form label{display:grid;gap:4px;font-size:11px;font-weight:800;color:#52635b}
 .admin-ad-contact-form input{width:170px;max-width:100%;padding:8px 9px;border:1px solid #dce1e8;border-radius:5px;font:12px 'DM Sans',sans-serif}
 @media(max-width:650px){.admin-ad-contact-form{grid-column:1/-1;width:100%}.admin-ad-contact-form label{flex:1}.admin-ad-contact-form input{width:100%}}
+
+
+/* Ajustements du lecteur publicitaire principal */
+.bam-hero-ad{
+  width:100%;
+  max-width:470px;
+}
+.bam-hero-ad .publicite-playlist-frame{
+  aspect-ratio:16/9;
+  min-height:250px;
+  border:2px solid #ffffff80;
+  border-radius:16px;
+  background:#00170f;
+}
+.bam-hero-ad .publicite-playlist-media{
+  object-fit:contain;
+}
+.bam-hero-ad .publicite-playlist-label{
+  top:10px;
+  bottom:auto;
+  left:10px;
+  right:auto;
+  width:auto;
+  max-width:calc(100% - 20px);
+  padding:6px 9px;
+  border-radius:7px;
+  background:#001b12bd;
+}
+.bam-hero-ad .publicite-playlist-label span{font-size:9px}
+.bam-hero-ad .publicite-playlist-label strong{font-size:11px}
+.publicite-playlist-sound{
+  position:absolute;
+  z-index:3;
+  top:10px;
+  right:10px;
+  border:1px solid #ffffffb5;
+  border-radius:999px;
+  padding:9px 13px;
+  background:#087344ed;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 3px 12px #0005;
+}
+.publicite-playlist-sound:hover{background:#075b37}
+.bam-hero-ad .publicite-playlist-whatsapp{
+  position:absolute;
+  z-index:3;
+  left:10px;
+  bottom:10px;
+  margin:0;
+  padding:8px 12px;
+  font-size:12px;
+  box-shadow:0 3px 12px #0005;
+}
+.bam-hero-ad .publicite-playlist-failed{border-radius:14px}
+@media(max-width:850px){
+  .bam-hero-ad{grid-column:1/-1;justify-self:end;width:min(100%,430px);max-width:430px}
+  .bam-hero-ad .publicite-playlist-frame{aspect-ratio:16/9;min-height:220px}
+}
+@media(max-width:520px){
+  .bam-hero-ad{grid-column:1/-1;justify-self:center;width:min(100%,380px);max-width:380px;margin-top:12px}
+  .bam-hero-ad .publicite-playlist-frame{aspect-ratio:16/9;min-height:190px}
+  .bam-hero-ad .publicite-playlist-label{top:7px;left:7px;padding:5px 7px}
+  .bam-hero-ad .publicite-playlist-label strong{font-size:10px}
+  .bam-hero-ad .publicite-playlist-sound{top:7px;right:7px;padding:7px 10px;font-size:10px}
+  .bam-hero-ad .publicite-playlist-whatsapp{left:7px;bottom:7px;padding:7px 9px;font-size:10px}
+}
