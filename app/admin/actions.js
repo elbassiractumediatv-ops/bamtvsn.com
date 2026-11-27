@@ -192,7 +192,7 @@ export async function saveAdvertisementAction(input) {
       !/^[0-9]+-[0-9a-f-]+[.](jpg|png|webp|gif|mp4|webm)$/i.test(filename) ||
       !allowed.includes(mimeType) || !['image','video'].includes(mediaType) ||
       (mediaType === 'video') !== mimeType.startsWith('video/') ||
-      (whatsappPhone && !/^\\d{8,15}$/.test(whatsappPhone))) return { ok: false, error: 'invalid' };
+      (whatsappPhone && !/^\d{8,15}$/.test(whatsappPhone))) return { ok: false, error: 'invalid' };
   const duration = mediaType === 'image' ? Number(input?.durationSeconds) : 8;
   if (!Number.isInteger(duration) || duration < 5 || duration > 60) return { ok: false, error: 'invalid' };
   const { data: files, error: listError } = await supabase.storage.from('publicites').list('playlist', { search: filename, limit: 20 });
