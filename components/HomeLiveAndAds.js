@@ -6,11 +6,11 @@ import AdvertisementPlaylist from '@/components/AdvertisementPlaylist';
 // Current broadcast supplied by BAM TV SN.
 // A YouTube live broadcast has its own video ID; this must be updated for each new broadcast.
 const CHANNEL_ID = 'UC7VnuAmqfg2ZFXcP4VozLyw';
-const CHANNEL_URL = 'https://www.youtube.com/@bamtvsenegal';
+const CHANNEL_URL = 'https://www.youtube.com/channel/' + CHANNEL_ID;
 const LIVE_VIDEO_ID = 'wMvfskHadL0';
 const LIVE_EMBED_URL = `https://www.youtube.com/embed/${LIVE_VIDEO_ID}?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0`;
 
-export default function HomeLiveAndAds({ ads = [] }) {
+export default function HomeLiveAndAds({ ads = [], showAds = true, showChannelLink = true }) {
   const frameRef = useRef(null);
   const playerRef = useRef(null);
   const [isLive, setIsLive] = useState(false);
@@ -104,7 +104,7 @@ export default function HomeLiveAndAds({ ads = [] }) {
   };
 
   return (
-    <div className="bam-live-ads-layout">
+    <div className={"bam-live-ads-layout" + (showAds ? "" : " bam-live-player-only")}>
       <section className="bam-home-live" aria-label="Direct YouTube BAM TV SN">
         <div className="bam-home-live-heading">
           <span className={isLive ? 'bam-live-dot is-live' : 'bam-live-dot'} />
@@ -125,13 +125,13 @@ export default function HomeLiveAndAds({ ads = [] }) {
           {liveReady && !playerError && !soundEnabled && <button type="button" className="bam-live-sound-button" onClick={enableLiveSound}>Activer le son du direct</button>}
           {playerError && <div className="bam-home-live-error">Le direct ne peut pas être intégré. Regardez-le sur <a href={`https://www.youtube.com/live/${LIVE_VIDEO_ID}`} target="_blank" rel="noopener noreferrer">YouTube</a>.</div>}
         </div>
-        <a className="bam-home-live-channel" href={CHANNEL_URL} target="_blank" rel="noopener noreferrer">Voir la chaîne BAM TV SN sur YouTube ↗</a>
+        {showChannelLink && <a className="bam-home-live-channel" href={CHANNEL_URL} target="_blank" rel="noopener noreferrer">Voir la chaîne BAM TV SN sur YouTube ↗</a>}
       </section>
-      <section className="bam-home-ad-column" aria-label="Playlist publicitaire">
+      {showAds && <section className="bam-home-ad-column" aria-label="Playlist publicitaire">
         <div className="bam-home-ad-heading">ESPACE PUBLICITAIRE</div>
         <AdvertisementPlaylist ads={ads} variant="hero" paused={isLive} />
         {isLive && <p className="bam-ad-paused-note">Publicités en pause pendant le direct</p>}
-      </section>
+      </section>}
     </div>
   );
 }
