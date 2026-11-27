@@ -10,7 +10,7 @@ export default function FavoritesScreen(){
  useFocusEffect(useCallback(()=>{load()},[load]));
  return <ScrollView style={{flex:1,backgroundColor:C.bg}} contentContainerStyle={{padding:16}}><Header title="Mes favoris" subtitle="Vos contenus enregistrés sur ce téléphone"/>
  {!busy&&!articles.length&&!videos.length?<Empty text="Enregistrez un article ou une vidéo pour le retrouver ici."/>:null}
- {articles.map(x=><ArticleCard key={x.id} item={x} onPress={()=>router.push('/article/'+x.slug)}/>)}
- {videos.map(x=><View key={x.id} style={{marginBottom:12}}><VideoCard item={x} onPress={()=>router.push('/video/'+x.slug)}/></View>)}
+ {articles.map(x=><ArticleCard key={x.id} item={x} onPress={()=>router.push({pathname:'/article/[slug]',params:{slug:x.slug}})}/>)}
+ {videos.map(x=><View key={x.id} style={{marginBottom:12}}><VideoCard item={x} onPress={()=>router.push({pathname:'/video/[slug]',params:{slug:x.slug}})}/></View>)}
  </ScrollView>;
 }
