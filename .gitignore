@@ -1,9 +1,8 @@
+node_modules/
+.next/
+.netlify/
 .env
 .env.*
 !.env.example
-node_modules/
-.next/
-dist/
-backups/
-*.dump
-*.backup
+out/
+coverage/

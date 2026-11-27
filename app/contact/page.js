@@ -1,0 +1,2 @@
+export const metadata={title:'Contact'};
+export default function ContactPage(){return <section className="section"><div className="wrap"><div className="section-head"><div><p className="eyebrow">Parlons ensemble</p><h1>Contact</h1></div></div><div className="empty-state"><h2>Contacter la rédaction BAM TV SN</h2><p>Pour vos informations et propositions de sujets, écrivez à la rédaction de BAM TV SN.</p></div></div></section>}

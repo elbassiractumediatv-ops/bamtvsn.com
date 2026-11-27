@@ -1,0 +1,3 @@
+import {getVideos} from '@/lib/content';import VideoCard from '@/components/VideoCard';import EmptyState from '@/components/EmptyState';
+export const dynamic='force-dynamic';export const metadata={title:'Vidéos'};
+export default async function VideosPage(){const items=await getVideos(100).catch(()=>[]);return <section className="section"><div className="wrap"><div className="section-head"><div><p className="eyebrow">Reportages, débats et magazines</p><h1>Vidéos</h1></div></div>{items.length?<div className="video-grid">{items.map(x=><VideoCard key={x.id} video={x}/>)}</div>:<EmptyState title="Aucune vidéo publiée">Les vidéos de BAM TV SN apparaîtront ici.</EmptyState>}</div></section>}
