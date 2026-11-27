@@ -10,7 +10,7 @@ export default async function AdminAdvertisementsPage({ searchParams }) {
   const params = await searchParams;
   const { data: ads, error } = await supabase
     .from('advertisements')
-    .select('id,title,media_url,media_type,mime_type,duration_seconds,position,is_active,created_at')
+    .select('id,title,media_url,media_type,mime_type,duration_seconds,position,is_active,created_at,whatsapp_phone')
     .order('position', { ascending: true })
     .order('created_at', { ascending: true });
 
@@ -49,6 +49,7 @@ export default async function AdminAdvertisementsPage({ searchParams }) {
               <div className="admin-advertisement-info">
                 <strong>{ad.title}</strong>
                 <span>{ad.media_type === 'video' ? 'Vidéo' : 'Image'} · Position {ad.position + 1}{ad.media_type === 'image' ? ` · ${ad.duration_seconds}s` : ''}</span>
+                <span>{ad.whatsapp_phone ? `WhatsApp : ${ad.whatsapp_phone}` : 'Aucun contact WhatsApp associé'}</span>
                 <span className={ad.is_active ? 'admin-ad-status active' : 'admin-ad-status paused'}>{ad.is_active ? 'En diffusion' : 'En pause'}</span>
               </div>
               <div className="admin-advertisement-actions">
