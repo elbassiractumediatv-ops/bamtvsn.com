@@ -64,9 +64,11 @@ export async function createVideoAction(form) {
   const thumbnail = val(form, 'thumbnail_url');
   const categoryId = val(form, 'category_id');
   const emissionId = val(form, 'emission_id');
-  if (!title || !within(title, 180) || !within(description, 5000) || !validUuid(categoryId) ||
+  if (title.length < 3 || !within(title, 200) || !within(description, 5000) || !validUuid(categoryId) ||
       (emissionId && !validUuid(emissionId)) || !/^[A-Za-z0-9_-]{11}$/.test(youtubeId) ||
       !validUrl(thumbnail)) redirect('/admin?tab=video&error=video');
+  const { data: videoCategory } = await supabase.from('categories').select('id').eq('id', categoryId).eq('type', 'video').maybeSingle();
+  if (!videoCategory) redirect('/admin?tab=video&error=video');
   let slug;
   try { slug = await uniqueSlug(supabase, 'videos', title); }
   catch { redirect('/admin?tab=video&error=save'); }
@@ -89,12 +91,14 @@ export async function createArticleAction(form) {
   const cover = val(form, 'cover_url');
   const category = val(form, 'category_id');
   const status = val(form, 'status') === 'published' ? 'published' : 'draft';
-  if (!title || !within(title, 180) || !within(excerpt, 400) || !content ||
+  if (title.length < 3 || !within(title, 200) || !within(excerpt, 400) || !content ||
       !within(content, 100000) || !validUuid(category) || !validUrl(cover)) {
     redirect('/admin?tab=article&error=article');
   }
+  const { data: articleCategory } = await supabase.from('categories').select('id').eq('id', category).eq('type', 'article').maybeSingle();
+  if (!articleCategory) redirect('/admin?tab=article&error=article');
   let slug;
-  try { slug = await uniqueSlug(supabase, 'articles', title); }
+  try { slug = await uniqueSlug(supabase, 'articles', title);
   catch { redirect('/admin?tab=article&error=save'); }
   const { error } = await supabase.from('articles').insert({
     title, slug, excerpt: excerpt || null, content, cover_url: cover || null,
@@ -112,7 +116,7 @@ export async function createEmissionAction(form) {
   const description = val(form, 'description');
   const cover = val(form, 'cover_url');
   const schedule = val(form, 'schedule');
-  if (!title || !within(title, 160) || !within(description, 3000) ||
+  if (title.length < 2 || !within(title, 120) || !within(description, 3000) ||
       !within(schedule, 120) || !validUrl(cover)) redirect('/admin?tab=emission&error=emission');
   let slug;
   try { slug = await uniqueSlug(supabase, 'emissions', title); }
@@ -150,7 +154,7 @@ export async function publishDraftAction(form) {
   const { supabase } = await requireAdmin();
   const table = val(form, 'type') === 'video' ? 'videos' : 'articles';
   const id = val(form, 'id');
-  if (!/^[0-9a-f-]{36}$/i.test(id)) redirect('/admin?error=invalid');
+  if (!validUuid(id)) redirect('/admin?error=invalid');
   const { data, error } = await supabase.from(table).update({
     status: 'published',
     published_at: new Date().toISOString()
