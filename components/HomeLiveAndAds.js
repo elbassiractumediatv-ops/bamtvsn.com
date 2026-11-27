@@ -107,7 +107,7 @@ export default function HomeLiveAndAds({ ads = [] }) {
             referrerPolicy="strict-origin-when-cross-origin"
           />
           {!liveReady && <div className="bam-home-live-loading">Chargement du direct BAM TV SN…</div>}
-          {playerError && <div className="bam-home-live-error">Le direct ne peut pas être intégré. Regardez-le sur <a href="https://www.youtube.com/live/${LIVE_VIDEO_ID}" target="_blank" rel="noopener noreferrer">YouTube</a>.</div>}
+          {playerError && <div className="bam-home-live-error">Le direct ne peut pas être intégré. Regardez-le sur <a href={`https://www.youtube.com/live/${LIVE_VIDEO_ID}`} target="_blank" rel="noopener noreferrer">YouTube</a>.</div>}
         </div>
         <a className="bam-home-live-channel" href={CHANNEL_URL} target="_blank" rel="noopener noreferrer">Voir la chaîne BAM TV SN sur YouTube ↗</a>
       </section>
