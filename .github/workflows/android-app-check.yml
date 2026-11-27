@@ -1,0 +1,30 @@
+name: BAM TV SN Android checks
+on:
+  pull_request:
+    paths:
+      - "android-app/**"
+      - ".github/workflows/android-app-check.yml"
+  push:
+    branches:
+      - "feature/bam-tv-sn-android-v2"
+    paths:
+      - "android-app/**"
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: android-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.13"
+      - name: Install dependencies
+        run: npm install
+      - name: Check Expo SDK dependency compatibility
+        run: npx expo install --check
+      - name: Run Expo Doctor
+        run: npx expo-doctor
+      - name: TypeScript check
+        run: npx tsc --noEmit
