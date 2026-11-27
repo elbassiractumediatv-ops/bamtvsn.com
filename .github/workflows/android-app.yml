@@ -1,0 +1,73 @@
+name: Android app checks
+on:
+  push:
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android-app.yml'
+  pull_request:
+    paths:
+      - 'android-app/**'
+      - '.github/workflows/android-app.yml'
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: android-app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install
+      - run: npx expo-doctor
+      - run: npx tsc --noEmit
+      - run: npx expo export --platform android
+
+  build-apk:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: android-app
+    env:
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=1g -Dfile.encoding=UTF-8"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: android-app/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+      - run: npm ci
+      - name: Generate native Android project
+        run: npx expo prebuild --platform android --non-interactive
+      - name: Diagnose Android toolchain
+        run: |
+          node --version
+          java -version
+          cd android
+          ./gradlew --version
+      - name: Compile installable APK
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew --no-daemon --stacktrace --info --console=plain --max-workers=2 :app:assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: BAM-TV-SN-APK-test
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "name": "BAM TV SN",
+    "slug": "bam-tv-sn",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "bamtvsn",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router"
+    ],
+    "android": {
+      "package": "sn.bamtv.mobile",
+      "versionCode": 1
+    },
+    "ios": {
+      "bundleIdentifier": "sn.bamtv.mobile",
+      "supportsTablet": true
+    },
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
