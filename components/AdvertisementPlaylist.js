@@ -17,16 +17,23 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
   const [index, setIndex] = useState(0);
   const [autoplayBlocked, setAutoplayBlocked] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(false);
+  const [soundPreference, setSoundPreference] = useState(false);
   const [mediaFailed, setMediaFailed] = useState(false);
   const videoRef = useRef(null);
   const current = items[index] || null;
   const isHero = variant === 'hero';
 
+  // Remember the visitor's explicit sound choice for the rest of this browser session.
+  useEffect(() => {
+    try {
+      setSoundPreference(window.sessionStorage.getItem('bam-ad-sound') === 'on');
+    } catch {}
+  }, []);
+
   const advance = () => {
     if (items.length > 1) {
       setMediaFailed(false);
       setAutoplayBlocked(false);
-      setSoundEnabled(false);
       setIndex((value) => (value + 1) % items.length);
     } else {
       setMediaFailed(true);
@@ -56,14 +63,15 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
 
     const start = async () => {
       if (cancelled) return;
-      // Try audible autoplay first. Browsers may reject it until the visitor interacts.
-      video.muted = false;
+      // After one deliberate sound activation, try to keep sound on for every next ad.
+      video.muted = !soundPreference;
+      video.volume = 1;
       try {
         await video.play();
-        if (!cancelled) setSoundEnabled(true);
+        if (!cancelled) setSoundEnabled(!video.muted);
       } catch {
         if (cancelled) return;
-        // Keep the playlist moving automatically when audible autoplay is blocked.
+        // Browsers can still reject audible autoplay for a newly loaded media source.
         video.muted = true;
         try {
           await video.play();
@@ -80,7 +88,7 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
       cancelled = true;
       video.removeEventListener('canplay', start);
     };
-  }, [current?.id, current?.media_type]);
+  }, [current?.id, current?.media_type, current?.media_url, soundPreference]);
 
   const enableSound = async () => {
     const video = videoRef.current;
@@ -89,10 +97,13 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
       video.muted = false;
       video.volume = 1;
       await video.play();
+      setSoundPreference(true);
       setSoundEnabled(true);
       setAutoplayBlocked(false);
+      try { window.sessionStorage.setItem('bam-ad-sound', 'on'); } catch {}
     } catch {
       setSoundEnabled(false);
+      setAutoplayBlocked(true);
     }
   };
 
@@ -116,7 +127,6 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
       <div className="publicite-playlist-frame">
         {current.media_type === 'video' ? (
           <video
-            key={current.id}
             ref={videoRef}
             className="publicite-playlist-media"
             src={current.media_url}
@@ -137,12 +147,12 @@ export default function AdvertisementPlaylist({ ads = [], variant = 'page' }) {
           <strong>{current.title}</strong>
         </div>}
         {current.media_type === 'video' && !soundEnabled && (
-          <button type="button" className="publicite-playlist-sound" onClick={enableSound} aria-label="Activer le son de la publicité">Activer le son</button>
+          <button type="button" className="publicite-playlist-sound" onClick={enableSound} aria-label="Activer le son des publicités">Activer le son</button>
         )}
         {contactHref && <a className="publicite-playlist-whatsapp" href={contactHref} target="_blank" rel="noopener noreferrer">WhatsApp · {current.title}</a>}
         {mediaFailed && <div className="publicite-playlist-failed">Média momentanément indisponible.</div>}
       </div>
-      {autoplayBlocked && <p className="publicite-playlist-note" role="status">Le navigateur a bloqué le son automatique. La vidéo continue ; appuyez une fois sur « Activer le son » pour autoriser le son pendant la diffusion.</p>}
+      {autoplayBlocked && <p className="publicite-playlist-note" role="status">Le navigateur bloque encore le son automatique pour cette vidéo. Activez le son une fois ; BAM TV SN le conservera ensuite autant que le navigateur l’autorise.</p>}
       {!isHero && <p className="publicite-video-caption">Diffusion automatique · {items.length} annonce(s) active(s)</p>}
     </section>
   );
