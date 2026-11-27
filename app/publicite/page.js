@@ -1,21 +1,22 @@
 import Link from 'next/link';
-import { getVideos } from '@/lib/content';
+import AdvertisementPlaylist from '@/components/AdvertisementPlaylist';
+import { createServerSupabaseClient } from '@/lib/supabase/server';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Publicité | BAM TV SN',
-  description: 'Découvrez les annonces et offres publicitaires diffusées sur BAM TV SN.',
+  description: 'Découvrez les annonces et offres publicitaires diffusées automatiquement sur BAM TV SN.',
 };
 
 export default async function PublicitePage() {
-  const videos = await getVideos(12).catch(() => []);
-  const playlistIds = videos
-    .map((video) => video.youtube_id)
-    .filter((id) => /^[A-Za-z0-9_-]{11}$/.test(id || ''));
-  const firstVideoId = playlistIds[0];
-  const playlist = playlistIds.join(',');
-  const playlistUrl = firstVideoId
-    ? `https://www.youtube-nocookie.com/embed/${firstVideoId}?playlist=${encodeURIComponent(playlist)}&autoplay=1&mute=1&loop=1&playsinline=1&rel=0&modestbranding=1`
-    : null;
+  const supabase = await createServerSupabaseClient();
+  const { data: advertisements } = await supabase
+    .from('advertisements')
+    .select('id,title,media_url,media_type,duration_seconds,position')
+    .eq('is_active', true)
+    .order('position', { ascending: true })
+    .order('created_at', { ascending: true });
 
   return (
     <main className="publicite-page">
@@ -25,29 +26,7 @@ export default async function PublicitePage() {
         <p>Retrouvez ici les offres et annonces présentées par nos partenaires. Pour proposer votre propre publicité, contactez notre équipe ou préparez une annonce depuis l’administration.</p>
       </section>
 
-      {playlistUrl && (
-        <section className="publicite-video-section" aria-labelledby="publicite-video-title">
-          <div className="publicite-video-heading">
-            <div>
-              <p className="eyebrow">BAM TV SN · VIDÉOS</p>
-              <h2 id="publicite-video-title">Nos vidéos défilent automatiquement</h2>
-              <p>Le lecteur enchaîne les vidéos publiées sur la chaîne. Le son démarre coupé pour permettre la lecture automatique ; vous pouvez l’activer directement dans le lecteur.</p>
-            </div>
-            <Link href="/videos">Toutes les vidéos →</Link>
-          </div>
-          <div className="publicite-video-player">
-            <iframe
-              src={playlistUrl}
-              title="Playlist vidéo BAM TV SN"
-              loading="eager"
-              allow="autoplay; encrypted-media; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          </div>
-          <p className="publicite-video-caption">{videos.length} vidéo(s) publiée(s) disponibles dans la sélection automatique.</p>
-        </section>
-      )}
+      <AdvertisementPlaylist ads={advertisements || []} />
 
       <section className="publicite-list" aria-labelledby="iptv-ad-title">
         <article className="publicite-ad-card">
@@ -82,9 +61,9 @@ export default async function PublicitePage() {
         <p>Présentez votre entreprise, votre événement, votre cérémonie, votre produit ou votre service à notre audience.</p>
         <div className="publicite-actions">
           <Link href="/contact">Demander un espace publicitaire</Link>
-          <Link className="secondary" href="/admin?tab=article">Créer une annonce dans une publication</Link>
+          <Link className="secondary" href="/admin/publicites">Gérer la playlist publicitaire</Link>
         </div>
-        <div className="publicite-note">La création et la publication d’une annonce depuis l’administration restent réservées aux membres autorisés de l’équipe BAM TV SN. Ajoutez le visuel et les informations de l’annonce, puis vérifiez le contenu avant publication.</div>
+        <div className="publicite-note">La création, l’ajout et la gestion des publicités diffusées automatiquement sont réservés aux membres autorisés de l’équipe BAM TV SN.</div>
       </section>
     </main>
   );
