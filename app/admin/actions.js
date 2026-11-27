@@ -176,3 +176,63 @@ export async function publishDraftAction(form) {
   revalidatePath('/', 'layout');
   redirect('/admin?tab=review&published=1');
 }
+
+
+export async function saveAdvertisementAction(input) {
+  const { supabase, user } = await requireAdmin();
+  const title = String(input?.title || '').trim();
+  const path = String(input?.path || '');
+  const mimeType = String(input?.mimeType || '');
+  const mediaType = String(input?.mediaType || '');
+  const allowed = ['image/jpeg','image/png','image/webp','image/gif','video/mp4','video/webm'];
+  const filename = path.split('/').pop();
+  if (title.length < 2 || !within(title, 120) || path.split('/').length !== 2 ||
+      path.split('/')[0] !== 'playlist' ||
+      !/^[0-9]+-[0-9a-f-]+[.](jpg|png|webp|gif|mp4|webm)$/i.test(filename) ||
+      !allowed.includes(mimeType) || !['image','video'].includes(mediaType) ||
+      (mediaType === 'video') !== mimeType.startsWith('video/')) return { ok: false, error: 'invalid' };
+  const duration = mediaType === 'image' ? Number(input?.durationSeconds) : 8;
+  if (!Number.isInteger(duration) || duration < 5 || duration > 60) return { ok: false, error: 'invalid' };
+  const { data: files, error: listError } = await supabase.storage.from('publicites').list('playlist', { search: filename, limit: 20 });
+  if (listError || !files?.some((file) => file.name === filename)) return { ok: false, error: 'upload' };
+  const { data: last } = await supabase.from('advertisements').select('position').order('position', { ascending: false }).limit(1).maybeSingle();
+  const position = (last?.position ?? -1) + 1;
+  const { data: publicUrl } = supabase.storage.from('publicites').getPublicUrl(path);
+  const { error } = await supabase.from('advertisements').insert({
+    title, media_url: publicUrl.publicUrl, media_path: path, media_type: mediaType,
+    mime_type: mimeType, duration_seconds: duration, position, is_active: true, created_by: user.id,
+  });
+  if (error) return { ok: false, error: 'save' };
+  revalidatePath('/publicite');
+  revalidatePath('/admin/publicites');
+  return { ok: true };
+}
+
+export async function toggleAdvertisementAction(form) {
+  const { supabase } = await requireAdmin();
+  const id = val(form, 'id');
+  const active = val(form, 'active') === 'true';
+  if (!validUuid(id)) redirect('/admin/publicites?error=invalid');
+  const { error } = await supabase.from('advertisements')
+    .update({ is_active: active, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) redirect('/admin/publicites?error=save');
+  revalidatePath('/publicite');
+  revalidatePath('/admin/publicites');
+  redirect('/admin/publicites?updated=1');
+}
+
+export async function deleteAdvertisementAction(form) {
+  const { supabase } = await requireAdmin();
+  const id = val(form, 'id');
+  if (!validUuid(id)) redirect('/admin/publicites?error=invalid');
+  const { data: ad, error: readError } = await supabase.from('advertisements')
+    .select('id,media_path').eq('id', id).maybeSingle();
+  if (readError || !ad) redirect('/admin/publicites?error=save');
+  const { error: deleteError } = await supabase.from('advertisements').delete().eq('id', id);
+  if (deleteError) redirect('/admin/publicites?error=save');
+  await supabase.storage.from('publicites').remove([ad.media_path]);
+  revalidatePath('/publicite');
+  revalidatePath('/admin/publicites');
+  redirect('/admin/publicites?deleted=1');
+}
