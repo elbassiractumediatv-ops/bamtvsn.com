@@ -14,6 +14,11 @@ const contentSecurityPolicy = [
 const nextConfig = {
   poweredByHeader: false,
   images: { unoptimized: true },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '10mb',
+    },
+  },
   async headers() {
     return [
       {
