@@ -36,6 +36,19 @@ async function validImageSignature(file, mime) {
   return false;
 }
 
+export async function requestPasswordResetAction(form) {
+  const email = val(form, 'email');
+  if (!email || !within(email, 254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    redirect('/admin/forgot-password?error=invalid');
+  }
+  const { supabase } = await getAdminUser();
+  await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://bamtvsn.com/admin/reset-password',
+  });
+  // Réponse identique qu'un compte existe ou non : empêche l'énumération des administrateurs.
+  redirect('/admin/forgot-password?sent=1');
+}
+
 export async function loginAction(form) {
   const email = val(form, 'email');
   const password = String(form.get('password') ?? '');
