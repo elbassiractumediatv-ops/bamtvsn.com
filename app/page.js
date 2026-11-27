@@ -62,7 +62,7 @@ export default async function HomePage() {
             {latest.length ? <div className="reference-article-grid">
               {latest.map((article,i)=><article className="reference-article" key={article.id}>
                 <Link href={`/actualites/${article.slug}`} className="reference-article-image">
-                  <ArticleCover article={article} loading={i>2?'lazy':'eager'} />
+                  <ArticleCover article={article} variant="card" loading={i>2?'lazy':'eager'} />
                 </Link>
                 <div className="reference-article-body">
                   <span className="reference-category">{article.category?.name || 'ACTUALITÉS'}</span>
