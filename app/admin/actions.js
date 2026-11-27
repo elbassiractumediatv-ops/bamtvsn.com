@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { getAdminUser, requireAdmin } from '@/lib/admin';
 
 function val(form, name) { return String(form.get(name) || '').trim(); }
-function slugify(value) { return value.normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 75) || 'contenu'; }
+function slugify(value) { return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 75) || 'contenu'; }
 function validUuid(value) { return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value); }
 function validUrl(value) {
   if (!value) return true;
@@ -39,7 +39,7 @@ async function validImageSignature(file, mime) {
 export async function loginAction(form) {
   const email = val(form, 'email');
   const password = val(form, 'password');
-  if (!email || !password || !within(email, 254) || !within(password, 1024) || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) redirect('/admin?error=missing');
+  if (!email || !password || !within(email, 254) || !within(password, 1024) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) redirect('/admin?error=missing');
   const { supabase } = await getAdminUser();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) redirect('/admin?error=login');
