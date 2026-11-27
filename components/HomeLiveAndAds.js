@@ -16,6 +16,7 @@ export default function HomeLiveAndAds({ ads = [] }) {
   const [isLive, setIsLive] = useState(false);
   const [liveReady, setLiveReady] = useState(false);
   const [playerError, setPlayerError] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -29,6 +30,7 @@ export default function HomeLiveAndAds({ ads = [] }) {
           onReady: (event) => {
             if (cancelled) return;
             setLiveReady(true);
+            // Audible autoplay is blocked by browsers until the visitor interacts.
             event.target.mute();
             event.target.playVideo();
           },
@@ -88,6 +90,19 @@ export default function HomeLiveAndAds({ ads = [] }) {
     };
   }, []);
 
+  const enableLiveSound = () => {
+    const player = playerRef.current;
+    if (!player) return;
+    try {
+      player.unMute();
+      player.setVolume(100);
+      player.playVideo();
+      setSoundEnabled(true);
+    } catch {
+      setSoundEnabled(false);
+    }
+  };
+
   return (
     <div className="bam-live-ads-layout">
       <section className="bam-home-live" aria-label="Direct YouTube BAM TV SN">
@@ -107,6 +122,7 @@ export default function HomeLiveAndAds({ ads = [] }) {
             referrerPolicy="strict-origin-when-cross-origin"
           />
           {!liveReady && <div className="bam-home-live-loading">Chargement du direct BAM TV SN…</div>}
+          {liveReady && !playerError && !soundEnabled && <button type="button" className="bam-live-sound-button" onClick={enableLiveSound}>Activer le son du direct</button>}
           {playerError && <div className="bam-home-live-error">Le direct ne peut pas être intégré. Regardez-le sur <a href={`https://www.youtube.com/live/${LIVE_VIDEO_ID}`} target="_blank" rel="noopener noreferrer">YouTube</a>.</div>}
         </div>
         <a className="bam-home-live-channel" href={CHANNEL_URL} target="_blank" rel="noopener noreferrer">Voir la chaîne BAM TV SN sur YouTube ↗</a>
