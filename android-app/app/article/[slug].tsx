@@ -23,7 +23,7 @@ export default function ArticleDetail(){
  <Text style={{fontSize:24,fontWeight:'900',color:COLORS.ink,marginTop:8}}>{item.title}</Text>
  {item.excerpt?<Text style={{fontSize:16,color:COLORS.muted,marginTop:12}}>{item.excerpt}</Text>:null}
  <Pressable onPress={toggle} style={{padding:12,backgroundColor:'#E6F2EA',borderRadius:10,marginTop:16}}><Text style={{color:COLORS.green,fontWeight:'800'}}>{saved?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</Text></Pressable>
- <Pressable onPress={()=>Share.share({message:item.title+'\nhttps://bamtvsn.com/article/'+item.slug})} style={{padding:12}}><Text style={{color:COLORS.green,fontWeight:'800'}}>Partager l’article</Text></Pressable>
+ <Pressable onPress={()=>Share.share({message:item.title+'\nhttps://bamtvsn.com/actualites/'+item.slug})} style={{padding:12}}><Text style={{color:COLORS.green,fontWeight:'800'}}>Partager l’article</Text></Pressable>
  <RenderHtml contentWidth={width-32} source={{html:articleToHtml(item.content)}} tagsStyles={{p:{fontSize:16,lineHeight:27,color:COLORS.ink,marginBottom:12},h1:{fontSize:24,fontWeight:'bold',color:COLORS.ink},h2:{fontSize:21,fontWeight:'bold',color:COLORS.ink},strong:{fontWeight:'bold'},a:{color:COLORS.green}}}/>
  </Page>;
 }
