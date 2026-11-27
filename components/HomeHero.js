@@ -53,6 +53,7 @@ export default function HomeHero({ headlines = [] }) {
             </div>
             <p className="bam-hero-motto"><span>INFORMER</span><i /> <span>ÉDUQUER</span><i /> <span>DIVERTIR</span><i /> <span>RASSEMBLER</span></p>
           </div>
+          <Link href="/publicite" className="bam-hero-ad"><strong>VOTRE PUBLICITÉ ICI</strong><span>Espace publicitaire</span><b>Réserver maintenant</b></Link>
         </div>
         <div className="bam-flag-waves" aria-hidden="true"><i /><i /><i /></div>
       </section>

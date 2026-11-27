@@ -51,11 +51,6 @@ export default async function HomePage() {
           </section>
 
           <aside className="reference-sidebar">
-            <Link href="/publicite" className="reference-ad">
-              <strong>VOTRE PUBLICITÉ ICI</strong>
-              <span>Espace publicitaire</span>
-              <b>Réserver maintenant</b>
-            </Link>
             <section className="reference-trends">
               <h2>TENDANCES</h2>
               {trendingVideos.length ? trendingVideos.map(video=><Link href={`/videos/${video.slug}`} className="reference-trend reference-trend-video" key={video.id}>
