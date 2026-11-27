@@ -21,7 +21,6 @@ export default function HomeHero({ headlines = [], ads = [] }) {
     <>
       <section className="bam-brand-hero" aria-labelledby="bam-hero-title">
         <nav className="bam-hero-nav" aria-label="Navigation principale">
-          <Link href="/" className="bam-nav-brand"><img src="/bam-tv-sn-logo.svg" alt="BAM TV SN" /></Link>
           <div className="bam-nav-links">
             {navigation.map(item => <Link key={item.href} href={item.href}>{item.label}</Link>)}
             <Link href="/direct" className="bam-nav-direct"><i /> Direct</Link>
