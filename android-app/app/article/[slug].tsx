@@ -1,30 +1,20 @@
 import React,{useEffect,useState} from 'react';
-import {Text,Image,Alert,Pressable,Share,useWindowDimensions} from 'react-native';
+import {Alert,Image,Pressable,Share,Text,View} from 'react-native';
 import {useLocalSearchParams,useRouter} from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import RenderHtml from '@native-html/render';
-import {Page,Busy,Empty,COLORS} from '../../components/UI';
 import {getArticleBySlug} from '../../lib/api';
-
-function articleToHtml(raw:string){
- const value=(raw||'').trim();
- if(/<(p|h[1-6]|ul|ol|li|div|blockquote|br|strong|em)\b/i.test(value)) return value;
- const escaped=value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
- return escaped.split(/\n\s*\n/).map(p=>'<p>'+p.replace(/\n/g,'<br/>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>')+'</p>').join('');
-}
+import {C,Empty,formatDate,Loading,Page} from '../../components/UI';
+function plainText(html:string){return (html||'').replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'').replace(/<\/(p|div|h[1-6]|li|blockquote)>/gi,'\n\n').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&quot;/g,'”').replace(/&#39;/g,'’').replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim();}
 export default function ArticleDetail(){
- const {slug}=useLocalSearchParams<{slug:string}>();const router=useRouter();const {width}=useWindowDimensions();
- const [item,setItem]=useState<any>(null),[busy,setBusy]=useState(true),[saved,setSaved]=useState(false);
- useEffect(()=>{(async()=>{try{setItem(await getArticleBySlug(String(slug)));const ids=JSON.parse(await AsyncStorage.getItem('bam-favorites')||'[]');setSaved(ids.includes('article:'+slug));}catch(e:any){Alert.alert('Erreur',e.message)}finally{setBusy(false)}})()},[slug]);
- const toggle=async()=>{const ids:string[]=JSON.parse(await AsyncStorage.getItem('bam-favorites')||'[]');const key='article:'+slug;await AsyncStorage.setItem('bam-favorites',JSON.stringify(saved?ids.filter(x=>x!==key):[...ids,key]));setSaved(!saved)};
- if(busy)return <Page><Busy/></Page>;if(!item)return <Page><Empty>Article introuvable ou non publié.</Empty></Page>;
- return <Page><Pressable onPress={()=>router.back()}><Text style={{color:COLORS.green,fontWeight:'800'}}>‹ Retour</Text></Pressable>
- {item.cover_url?<Image source={{uri:item.cover_url}} style={{width:'100%',height:220,borderRadius:14,marginTop:15}}/>:null}
- <Text style={{color:COLORS.green,fontWeight:'900',marginTop:16}}>{item.categories?.name||'ACTUALITÉ'}</Text>
- <Text style={{fontSize:24,fontWeight:'900',color:COLORS.ink,marginTop:8}}>{item.title}</Text>
- {item.excerpt?<Text style={{fontSize:16,color:COLORS.muted,marginTop:12}}>{item.excerpt}</Text>:null}
- <Pressable onPress={toggle} style={{padding:12,backgroundColor:'#E6F2EA',borderRadius:10,marginTop:16}}><Text style={{color:COLORS.green,fontWeight:'800'}}>{saved?'★ Retirer des favoris':'☆ Ajouter aux favoris'}</Text></Pressable>
- <Pressable onPress={()=>Share.share({message:item.title+'\nhttps://bamtvsn.com/article/'+item.slug})} style={{padding:12}}><Text style={{color:COLORS.green,fontWeight:'800'}}>Partager l’article</Text></Pressable>
- <RenderHtml contentWidth={width-32} source={{html:articleToHtml(item.content)}} tagsStyles={{p:{fontSize:16,lineHeight:27,color:COLORS.ink,marginBottom:12},h1:{fontSize:24,fontWeight:'bold',color:COLORS.ink},h2:{fontSize:21,fontWeight:'bold',color:COLORS.ink},strong:{fontWeight:'bold'},a:{color:COLORS.green}}}/>
- </Page>;
+ const {slug}=useLocalSearchParams<{slug:string}>();const router=useRouter();const [item,setItem]=useState<any>(null);const [busy,setBusy]=useState(true);const [saved,setSaved]=useState(false);
+ useEffect(()=>{(async()=>{try{setItem(await getArticleBySlug(String(slug)));const ids:string[]=JSON.parse(await AsyncStorage.getItem('bam-favorites')||'[]');setSaved(ids.includes('article:'+slug));}catch(e:any){Alert.alert('Erreur',e.message)}finally{setBusy(false)}})()},[slug]);
+ const toggle=async()=>{const ids:string[]=JSON.parse(await AsyncStorage.getItem('bam-favorites')||'[]');const key='article:'+slug;await AsyncStorage.setItem('bam-favorites',JSON.stringify(saved?ids.filter(x=>x!==key):[...ids,key]));setSaved(!saved);};
+ if(busy)return <Page><Loading/></Page>;if(!item)return <Page><Pressable onPress={()=>router.back()}><Text style={{color:C.green,fontWeight:'800'}}>‹ Retour</Text></Pressable><Empty text="Article introuvable ou non publié."/></Page>;
+ return <Page><Pressable onPress={()=>router.back()}><Text style={{color:C.green,fontWeight:'900'}}>‹ Retour</Text></Pressable>
+ {item.cover_url?<Image source={{uri:item.cover_url}} style={{width:'100%',height:220,borderRadius:14}}/>:null}
+ <Text style={{color:C.green,fontWeight:'900',fontSize:11,letterSpacing:1}}>{item.category?.name||'ACTUALITÉ'}</Text>
+ <Text style={{fontSize:25,fontWeight:'900',color:C.ink,lineHeight:32}}>{item.title}</Text><Text style={{color:C.muted,fontSize:12}}>{formatDate(item.published_at)}</Text>
+ {item.excerpt?<Text style={{fontSize:16,color:C.muted,lineHeight:23}}>{item.excerpt}</Text>:null}
+ <View style={{flexDirection:'row',gap:10}}><Pressable onPress={toggle} style={{backgroundColor:C.pale,padding:12,borderRadius:10}}><Text style={{color:C.green,fontWeight:'800'}}>{saved?'★ Enregistré':'☆ Favoris'}</Text></Pressable><Pressable onPress={()=>Share.share({message:item.title+'\n'+(item.excerpt||'')})} style={{backgroundColor:C.pale,padding:12,borderRadius:10}}><Text style={{color:C.green,fontWeight:'800'}}>Partager ↗</Text></Pressable></View>
+ <Text style={{fontSize:16,lineHeight:27,color:C.ink}}>{plainText(item.content)}</Text></Page>;
 }
