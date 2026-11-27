@@ -1068,3 +1068,22 @@ body:has(.reference-home) .bam-home-ad-column .publicite-playlist-empty{min-heig
  body:has(.reference-home) .bam-home-live-frame,body:has(.reference-home) .bam-home-ad-column .publicite-playlist-frame{aspect-ratio:16/9}
  .bam-live-sound-button{right:7px;bottom:7px;padding:7px 10px;font-size:10px}
 }
+
+/* Desktop-only logo sizing: preserve all tablet and mobile layouts unchanged */
+@media (min-width: 851px){
+  body:has(.reference-home) .bam-hero-nav{
+    min-height:104px;
+    align-items:center;
+  }
+  body:has(.reference-home) .bam-nav-brand{
+    align-self:stretch;
+    display:flex;
+    align-items:center;
+  }
+  body:has(.reference-home) .bam-nav-brand img{
+    width:158px;
+    height:88px;
+    max-width:none;
+    object-fit:contain;
+  }
+}
