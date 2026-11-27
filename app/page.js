@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getArticles, getVideos, getEmissions, videoThumbnail } from '@/lib/content';
+import { getArticles, getVideos, getEmissions } from '@/lib/content';
 import { articleBanner } from '@/lib/article-banner';
 import ArticleCard from '@/components/ArticleCard';
 import VideoCard from '@/components/VideoCard';
