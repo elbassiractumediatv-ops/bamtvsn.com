@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "doctor": "npx expo-doctor",
     "apk": "eas build --platform android --profile preview",
-    "aab": "eas build --platform android --profile production"
+    "aab": "eas build --platform android --profile production",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.0",
@@ -22,7 +23,8 @@
     "react-native": "0.88.1",
     "react-native-safe-area-context": "~5.6.2",
     "react-native-screens": "~4.16.0",
-    "react-native-url-polyfill": "^2.0.0"
+    "react-native-url-polyfill": "^2.0.0",
+    "expo-font": "~58.0.12"
   },
   "devDependencies": {
     "@types/react": "~19.3.0",
