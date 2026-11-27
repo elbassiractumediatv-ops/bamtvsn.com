@@ -211,6 +211,23 @@ export async function saveAdvertisementAction(input) {
   return { ok: true };
 }
 
+export async function updateAdvertisementWhatsappAction(form) {
+  const { supabase } = await requireAdmin();
+  const id = val(form, 'id');
+  const whatsappPhone = val(form, 'whatsapp_phone').replace(/[^0-9]/g, '');
+  if (!validUuid(id) || (whatsappPhone && !/^\d{8,15}$/.test(whatsappPhone))) {
+    redirect('/admin/publicites?error=contact');
+  }
+  const { error } = await supabase.from('advertisements')
+    .update({ whatsapp_phone: whatsappPhone || null, updated_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) redirect('/admin/publicites?error=contact');
+  revalidatePath('/');
+  revalidatePath('/publicite');
+  revalidatePath('/admin/publicites');
+  redirect('/admin/publicites?contact=updated');
+}
+
 export async function toggleAdvertisementAction(form) {
   const { supabase } = await requireAdmin();
   const id = val(form, 'id');
