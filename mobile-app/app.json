@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "BAM TV SN",
+    "slug": "bam-tv-sn",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "bamtvsn",
+    "splash": {
+      "backgroundColor": "#087A3C"
+    },
+    "android": {
+      "package": "sn.bamtv.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#087A3C"
+      }
+    },
+    "ios": {
+      "supportsTablet": false
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}
