@@ -35,7 +35,7 @@ export async function createVideoAction(form) {
   const { supabase, user } = await requireAdmin();
   const title = val(form, 'title'); const youtubeId = val(form, 'youtube_id'); const description = val(form, 'description');
   const thumbnail = val(form, 'thumbnail_url'); const categoryId = val(form, 'category_id'); const emissionId = val(form, 'emission_id');
-  if (!title || !/^[A-Za-z0-9_-]{11}$/.test(youtubeId) || !validUrl(thumbnail)) redirect('/admin?tab=video&error=video');
+  if (!title || !categoryId || !/^[A-Za-z0-9_-]{11}$/.test(youtubeId) || !validUrl(thumbnail)) redirect('/admin?tab=video&error=video');
   const slug = await uniqueSlug(supabase, 'videos', title);
   const { error } = await supabase.from('videos').insert({ title, slug, youtube_id: youtubeId, description: description || null, thumbnail_url: thumbnail || null, category_id: categoryId || null, emission_id: emissionId || null, status: 'published', featured: false, published_at: new Date().toISOString() });
   if (error) redirect('/admin?tab=video&error=save');
@@ -45,7 +45,7 @@ export async function createVideoAction(form) {
 export async function createArticleAction(form) {
   const { supabase, user } = await requireAdmin();
   const title = val(form, 'title'); const excerpt = val(form, 'excerpt'); const content = val(form, 'content'); const cover = val(form, 'cover_url'); const category = val(form, 'category_id');
-  if (!title || !content || !validUrl(cover)) redirect('/admin?tab=article&error=article');
+  if (!title || !content || !category || !validUrl(cover)) redirect('/admin?tab=article&error=article');
   const slug = await uniqueSlug(supabase, 'articles', title);
   const { error } = await supabase.from('articles').insert({ title, slug, excerpt: excerpt || null, content, cover_url: cover || null, category_id: category || null, status: 'published', featured: false, author_id: user.id, published_at: new Date().toISOString() });
   if (error) redirect('/admin?tab=article&error=save');
