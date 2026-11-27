@@ -5,7 +5,15 @@ import { getCategories, getEmissions } from '@/lib/content';
 import { loginAction, logoutAction, createVideoAction, createArticleAction, createEmissionAction } from './actions';
 
 export const dynamic='force-dynamic';
-function Status({params}){if(params.error==='login')return <div className="notice">Connexion refusée. Vérifiez votre adresse et votre mot de passe.</div>;if(params.error==='forbidden')return <div className="notice">Ce compte n’a pas les droits administrateur BAM TV SN.</div>;if(params.error==='missing')return <div className="notice">Saisissez votre adresse e-mail et votre mot de passe.</div>;if(params.error==='save')return <div className="notice">Enregistrement impossible. Vérifiez les champs et les règles Supabase.</div>;if(params.error)return <div className="notice">Vérifiez les champs obligatoires et les liens HTTPS.</div>;if(params.created)return <div className="notice success">Publication enregistrée. Le contenu apparaît maintenant sur le site.</div>;return null}
+function Status({params}){
+  if(params.error==='login')return <div className="notice">Connexion refusée. Vérifiez vos identifiants ou réessayez plus tard.</div>;
+  if(params.error==='logout')return <div className="notice">La déconnexion a échoué. Réessayez.</div>;
+  if(params.error==='missing')return <div className="notice">Saisissez votre adresse e-mail et votre mot de passe.</div>;
+  if(params.error==='save')return <div className="notice">Enregistrement impossible. Vérifiez les champs et réessayez.</div>;
+  if(params.error)return <div className="notice">Vérifiez les champs obligatoires et les liens HTTPS.</div>;
+  if(params.created)return <div className="notice success">Publication enregistrée. Le contenu apparaît maintenant sur le site.</div>;
+  return null;
+}
 function Field({label,name,required=false,placeholder='',type='text'}){return <label>{label}<input name={name} type={type} required={required} placeholder={placeholder}/></label>}
 function Tabs({tab}){return <div className="admin-tabs">{[['video','Ajouter une vidéo'],['article','Ajouter un titre'],['emission','Ajouter une émission']].map(([id,title])=><Link key={id} href={`/admin?tab=${id}`} aria-current={tab===id?'page':undefined}>{title}</Link>)}</div>}
 
