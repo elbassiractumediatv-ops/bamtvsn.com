@@ -18,8 +18,8 @@ export default function ArticleCover({ article, className = '', loading = 'lazy'
         <div className={`article-cover-fallback article-cover-fallback-card ${className}`} role="img" aria-label={`Illustration éditoriale BAM TV SN : ${article?.title || 'Actualité'}`}>
           <span className="article-cover-brand">BAM <b>TV</b> SN</span>
           <span className="article-cover-category">{category}</span>
-          <strong>{article?.title || 'Actualité'}</strong>
-          <small>{published}</small>
+          <strong>Image non disponible</strong>
+          <small>BAMTVSN.COM</small>
         </div>
       );
     }
