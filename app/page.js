@@ -21,8 +21,13 @@ export default async function HomePage() {
   return (
     <div className="home-redesign">
       <div className="home-ticker">
-        <span className="home-ticker-label">À LA UNE</span>
-        <p>{lead?.title || 'BAM TV SN — L’information, le direct et les images.'}</p>
+        <span className="home-ticker-label">EN BREF</span>
+        <div className="home-ticker-marquee" aria-label="Actualités à la une">
+          <div className="home-ticker-track">
+            <span>{lead?.title || 'BAM TV SN — L’information, le direct et les images.'}</span>
+            <span aria-hidden="true">{lead?.title || 'BAM TV SN — L’information, le direct et les images.'}</span>
+          </div>
+        </div>
       </div>
 
       <section className="home-intro wrap">
