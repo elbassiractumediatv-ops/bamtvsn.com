@@ -645,3 +645,21 @@ body:has(.reference-home) .site-header{display:none!important}
  .publicite-ad-details{padding:4px 4px 8px}
  .publicite-whatsapp{width:100%}
 }
+
+
+/* Page Publicité : playlist BAM TV SN en lecture automatique */
+.publicite-video-section{margin:0 0 38px;padding:clamp(16px,3vw,28px);border:1px solid #dce9e1;border-radius:18px;background:#f7faf8;box-shadow:0 12px 34px #063c2910}
+.publicite-video-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:18px}
+.publicite-video-heading .eyebrow{margin:0 0 7px;color:#087344;font-size:11px;font-weight:900;letter-spacing:.15em}
+.publicite-video-heading h2{margin:0;color:#10251d;font:900 clamp(22px,3.4vw,32px)/1.15 Manrope,sans-serif}
+.publicite-video-heading p:not(.eyebrow){max-width:760px;margin:9px 0 0;color:#52635b;line-height:1.65;font-size:14px}
+.publicite-video-heading>a{flex:0 0 auto;color:#087344;font-weight:900}
+.publicite-video-player{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:13px;background:#061b12;box-shadow:0 10px 28px #001c1330}
+.publicite-video-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.publicite-video-caption{margin:10px 2px 0;color:#64746b;font-size:12px}
+@media(max-width:650px){
+ .publicite-video-section{padding:13px;border-radius:13px}
+ .publicite-video-heading{display:block}
+ .publicite-video-heading>a{display:inline-block;margin-top:12px}
+ .publicite-video-player{aspect-ratio:16/9;border-radius:9px}
+}
