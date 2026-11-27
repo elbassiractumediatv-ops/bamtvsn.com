@@ -1132,3 +1132,13 @@ body:has(.reference-home) .bam-home-ad-column .publicite-playlist-empty{min-heig
     grid-column:2!important;grid-row:1!important;width:100%;min-width:0;
   }
 }
+
+
+/* Page /direct : afficher le même lecteur réel que sur la page d'accueil. */
+.direct-page-player{min-width:0;width:100%}
+.direct-page-player .bam-live-ads-layout,.direct-page-player .bam-live-player-only{display:block;width:100%}
+.direct-page-player .bam-home-live{width:100%}
+.direct-page-player .bam-home-live-heading{color:#174d37}
+.direct-page-player .bam-home-live-channel{color:#087344;font-size:12px}
+.direct-page-player .bam-home-live-frame{border-color:#dce7e0;box-shadow:0 8px 22px #002d201c}
+@media(max-width:850px){.direct-page-player{width:100%}.direct-page-player .bam-home-live-frame{width:100%}}
