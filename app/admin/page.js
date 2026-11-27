@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { getAdminUser } from '@/lib/admin';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { getCategories, getEmissions } from '@/lib/content';
 import { loginAction, logoutAction, createVideoAction, createArticleAction, createEmissionAction, publishDraftAction } from './actions';
 
