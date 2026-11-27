@@ -112,3 +112,59 @@
 .admin-review-item strong,.admin-review-item small{display:block}
 .admin-review-item small{color:var(--muted);font-size:11px;margin-top:5px}
 @media(max-width:750px){.contact-layout{grid-template-columns:1fr;gap:20px}.contact-panel{padding:18px}}
+
+
+/* En-tête éditorial BAM TV SN — desktop et mobile */
+.site-header{height:auto;background:#fff;color:#10251a;border-bottom:1px solid #e7ece8;position:relative;z-index:30}
+.header-top{min-height:94px;display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:12px;padding-bottom:12px}
+.header-top .brand img{width:clamp(190px,27vw,330px);max-height:82px;object-fit:contain;object-position:left center}
+.header-top-right{display:flex;align-items:center;justify-content:flex-end;gap:14px}
+.social-caption{font-size:12px;font-weight:800;color:#254333;white-space:nowrap}
+.social-links{display:flex;align-items:center;gap:8px}
+.social-links a{width:27px;height:27px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:15px;line-height:1;transition:transform .2s}
+.social-links a:hover{transform:translateY(-2px)}
+.social-youtube{background:#e62117}.social-facebook{background:#1877f2}.social-instagram{background:linear-gradient(35deg,#feda75,#d62976,#4f5bd5)}.social-tiktok{background:#111}.social-x{background:#111}
+.header-bottom{background:#fff;border-top:1px solid #f0f2f0}
+.header-bottom-inner{min-height:58px;display:flex;align-items:center;gap:18px}
+.main-nav{display:flex;align-items:center;gap:6px;min-width:0}
+.main-nav>a,.nav-dropdown-trigger{display:flex;align-items:center;gap:8px;padding:13px 15px;border-radius:5px;color:#164b35;font-size:13px;font-weight:900;white-space:nowrap}
+.main-nav>a:hover,.nav-dropdown-trigger:hover,.main-nav>a.active{background:#eaf3ed;color:#075b37}
+.nav-dropdown{position:relative}
+.nav-dropdown-trigger span{font-size:17px;line-height:10px}
+.nav-dropdown-panel{display:none;position:absolute;top:100%;left:0;min-width:220px;padding:9px;background:#fff;border:1px solid #e1e9e3;border-radius:8px;box-shadow:0 14px 32px #10251a1a;z-index:50;grid-template-columns:1fr}
+.nav-dropdown:hover .nav-dropdown-panel,.nav-dropdown:focus-within .nav-dropdown-panel{display:grid}
+.nav-dropdown-panel a{padding:9px 11px;border-radius:5px;color:#244b36;font-size:13px;font-weight:650}
+.nav-dropdown-panel a:hover{background:#edf5ef;color:#075b37}
+.main-nav>a.live-nav{background:#d62d32;color:#fff;padding-left:17px;padding-right:17px}
+.live-nav i{width:8px;height:8px;border-radius:50%;background:#fff;display:inline-block}
+.header-motto{margin-left:auto;color:#164b35;font-size:10px;font-weight:900;letter-spacing:.08em;white-space:nowrap}
+.header-motto b{color:#d62d32;padding:0 3px}
+.header-search{flex:0 0 36px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#f1f6f2;color:#075b37;font-size:25px;font-weight:800}
+.home-ticker{background:#fff;color:#24382c;border:1px solid #e8eee9;overflow:hidden;gap:0;padding:0 max(14px,calc((100% - 1160px)/2))}
+.home-ticker-label{background:#d62d32;color:#fff;min-height:46px;padding:0 19px;font-size:12px;flex:0 0 auto}
+.home-ticker p{flex:0 0 auto;max-width:none;overflow:visible;text-overflow:clip;white-space:nowrap;padding-left:22px;color:#263b2e;animation:bamTickerScroll 28s linear infinite}
+.home-ticker:hover p{animation-play-state:paused}
+@keyframes bamTickerScroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@media(max-width:900px){
+ .header-bottom-inner{flex-wrap:wrap;gap:7px;padding-top:8px;padding-bottom:8px}
+ .main-nav{flex:1 1 100%;overflow-x:auto;scrollbar-width:none}
+ .main-nav::-webkit-scrollbar{display:none}
+ .header-motto{margin-left:0;flex:1 1 auto}
+}
+@media(max-width:650px){
+ .header-top{min-height:72px;gap:10px;padding-top:9px;padding-bottom:9px}
+ .header-top .brand img{width:clamp(132px,42vw,185px);max-height:58px}
+ .header-top-right{gap:6px;flex-direction:column;align-items:flex-end}
+ .social-caption{font-size:9px}
+ .social-links{gap:5px}
+ .social-links a{width:23px;height:23px;font-size:12px}
+ .header-bottom-inner{width:100%;padding:6px 10px 8px;gap:6px}
+ .main-nav{gap:3px}
+ .main-nav>a,.nav-dropdown-trigger{font-size:11px;padding:10px 9px}
+ .nav-dropdown-panel{position:fixed;top:auto;left:10px;right:10px;max-height:60vh;overflow:auto;grid-template-columns:1fr 1fr}
+ .header-motto{font-size:8px;letter-spacing:.02em;white-space:normal;line-height:1.5}
+ .header-search{width:30px;height:30px;flex-basis:30px;font-size:21px}
+ .home-ticker{min-height:42px;padding:0 0}
+ .home-ticker-label{min-height:42px;padding:0 12px;font-size:10px}
+ .home-ticker p{font-size:11px;padding-left:14px;animation-duration:22s}
+}
