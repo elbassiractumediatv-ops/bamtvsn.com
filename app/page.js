@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getArticles, getVideos, videoThumbnail } from '@/lib/content';
+import { articleBanner } from '@/lib/article-banner';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,6 +10,15 @@ const navItems = [
   ['Culture','/actualites?categorie=culture'],['Monde','/actualites?categorie=international'],
 ];
 
+function dailyVideoSelection(items) {
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - 5);
+  const eligible = items.filter(video => video.published_at && new Date(video.published_at) >= cutoff);
+  const day = new Date().toISOString().slice(0, 10);
+  const hash = (value) => [...value].reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) >>> 0, 7);
+  return [...eligible].sort((a, b) => hash(`${day}-${a.id}`) - hash(`${day}-${b.id}`)).slice(0, 3);
+}
+
 function dateLabel(value) {
   if (!value) return 'BAM TV SN';
   return new Intl.DateTimeFormat('fr-FR',{day:'2-digit',month:'short',year:'numeric'}).format(new Date(value));
@@ -17,10 +27,11 @@ function dateLabel(value) {
 export default async function HomePage() {
   const [articles, videos] = await Promise.all([
     getArticles(12).catch(() => []),
-    getVideos(6).catch(() => []),
+    getVideos(100).catch(() => []),
   ]);
   const latest = articles.slice(0,6);
-  const trends = articles.slice(1,4);
+  const trends = [...articles].sort((a,b) => (b.views || 0) - (a.views || 0)).slice(0,3);
+  const trendingVideos = dailyVideoSelection(videos);
   return (
     <div className="reference-home">
       <header className="reference-masthead">
@@ -51,7 +62,7 @@ export default async function HomePage() {
             {latest.length ? <div className="reference-article-grid">
               {latest.map((article,i)=><article className="reference-article" key={article.id}>
                 <Link href={`/actualites/${article.slug}`} className="reference-article-image">
-                  <img src={article.cover_url || '/placeholder-news.svg'} alt={article.title} loading={i>2?'lazy':'eager'} />
+                  <img src={article.cover_url || articleBanner(article)} alt={article.title} loading={i>2?'lazy':'eager'} />
                 </Link>
                 <div className="reference-article-body">
                   <span className="reference-category">{article.category?.name || 'ACTUALITÉS'}</span>
@@ -70,9 +81,13 @@ export default async function HomePage() {
             </Link>
             <section className="reference-trends">
               <h2>TENDANCES</h2>
-              {trends.length ? trends.map((article,i)=><Link href={`/actualites/${article.slug}`} className="reference-trend" key={article.id}>
+              {trendingVideos.length ? trendingVideos.map((video,i)=><Link href={`/videos/${video.slug}`} className="reference-trend reference-trend-video" key={video.id}>
+                <span>{String(i+1).padStart(2,'0')}</span><div><strong>{video.title}</strong><small>{dateLabel(video.published_at)} · Vidéo</small></div>
+              </Link>) : <p>Aucune vidéo publiée au cours des cinq derniers mois.</p>}
+              <h3 className="reference-trends-articles-title">ARTICLES POPULAIRES</h3>
+              {trends.map((article,i)=><Link href={`/actualites/${article.slug}`} className="reference-trend" key={article.id}>
                 <span>{String(i+1).padStart(2,'0')}</span><div><strong>{article.title}</strong><small>{dateLabel(article.published_at)}</small></div>
-              </Link>) : <p>Les tendances seront bientôt disponibles.</p>}
+              </Link>)}
             </section>
           </aside>
         </div>
@@ -80,7 +95,7 @@ export default async function HomePage() {
         <section className="reference-videos">
           <div className="reference-video-heading"><h2>DERNIÈRES VIDÉOS YOUTUBE</h2><Link href="/direct"><span>▶</span> EN DIRECT</Link></div>
           {videos.length ? <div className="reference-video-row">
-            {videos.map(video=><article className="reference-video-card" key={video.id}>
+            {videos.slice(0,4).map(video=><article className="reference-video-card" key={video.id}>
               <Link href={`/videos/${video.slug}`} className="reference-video-thumb">
                 <img src={videoThumbnail(video) || '/placeholder-video.svg'} alt={video.title} loading="lazy" />
                 <span>▶</span>

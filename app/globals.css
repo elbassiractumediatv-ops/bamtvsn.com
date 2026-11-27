@@ -269,3 +269,20 @@
  .reference-video-footer{justify-content:flex-start}
  .reference-video-footer>a{position:static;margin-left:auto}
 }
+
+
+/* Ajustements de la zone tendances et des miniatures vidéo */
+.reference-trends-articles-title{font:900 12px Manrope,sans-serif;color:#18231c;margin:15px 0 3px;padding-top:11px;border-top:2px solid #e8ede9}
+.reference-trend-video{background:#f7faf7;border-radius:6px;padding:8px;margin-bottom:5px}
+.reference-video-row{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.reference-video-thumb{aspect-ratio:16/9;min-height:110px}
+.reference-video-card h3{font-size:11px;line-height:1.4}
+@media(max-width:850px){
+ .reference-video-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .reference-video-thumb{min-height:125px}
+}
+@media(max-width:600px){
+ .reference-video-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}
+ .reference-video-thumb{min-height:105px}
+ .reference-video-card h3{font-size:10px}
+}
