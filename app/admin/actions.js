@@ -64,7 +64,7 @@ export async function createVideoAction(form) {
   const thumbnail = val(form, 'thumbnail_url');
   const categoryId = val(form, 'category_id');
   const emissionId = val(form, 'emission_id');
-  if (!title || !within(title, 180) || !within(description, 10000) || !validUuid(categoryId) ||
+  if (!title || !within(title, 180) || !within(description, 5000) || !validUuid(categoryId) ||
       (emissionId && !validUuid(emissionId)) || !/^[A-Za-z0-9_-]{11}$/.test(youtubeId) ||
       !validUrl(thumbnail)) redirect('/admin?tab=video&error=video');
   let slug;
@@ -89,7 +89,7 @@ export async function createArticleAction(form) {
   const cover = val(form, 'cover_url');
   const category = val(form, 'category_id');
   const status = val(form, 'status') === 'published' ? 'published' : 'draft';
-  if (!title || !within(title, 180) || !within(excerpt, 600) || !content ||
+  if (!title || !within(title, 180) || !within(excerpt, 400) || !content ||
       !within(content, 100000) || !validUuid(category) || !validUrl(cover)) {
     redirect('/admin?tab=article&error=article');
   }
@@ -112,8 +112,8 @@ export async function createEmissionAction(form) {
   const description = val(form, 'description');
   const cover = val(form, 'cover_url');
   const schedule = val(form, 'schedule');
-  if (!title || !within(title, 160) || !within(description, 5000) ||
-      !within(schedule, 180) || !validUrl(cover)) redirect('/admin?tab=emission&error=emission');
+  if (!title || !within(title, 160) || !within(description, 3000) ||
+      !within(schedule, 120) || !validUrl(cover)) redirect('/admin?tab=emission&error=emission');
   let slug;
   try { slug = await uniqueSlug(supabase, 'emissions', title); }
   catch { redirect('/admin?tab=emission&error=save'); }
@@ -151,11 +151,11 @@ export async function publishDraftAction(form) {
   const table = val(form, 'type') === 'video' ? 'videos' : 'articles';
   const id = val(form, 'id');
   if (!/^[0-9a-f-]{36}$/i.test(id)) redirect('/admin?error=invalid');
-  const { error } = await supabase.from(table).update({
+  const { data, error } = await supabase.from(table).update({
     status: 'published',
     published_at: new Date().toISOString()
-  }).eq('id', id).eq('status', 'draft');
-  if (error) redirect('/admin?error=save');
+  }).eq('id', id).eq('status', 'draft').select('id').maybeSingle();
+  if (error || !data) redirect('/admin?error=save');
   revalidatePath('/', 'layout');
   redirect('/admin?tab=review&published=1');
 }
