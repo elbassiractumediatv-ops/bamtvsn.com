@@ -291,3 +291,17 @@
 .reference-trend-video>img{width:104px;height:62px;object-fit:cover;border-radius:6px;display:block;background:#e5eee8}
 .reference-trend-video div{min-width:0}
 @media(max-width:600px){.reference-trend-video{grid-template-columns:88px minmax(0,1fr)}.reference-trend-video>img{width:88px;height:54px}}
+
+/* Article editorial typography */
+.article-body{white-space:normal;overflow-wrap:anywhere;color:#273244}
+.article-body p{margin:0 0 1.25em}
+.article-body h2{font:800 clamp(23px,3vw,30px)/1.25 Manrope,sans-serif;letter-spacing:-.025em;margin:1.7em 0 .65em;color:#111a27}
+.article-body h3,.article-body h4{font:800 20px/1.35 Manrope,sans-serif;margin:1.5em 0 .6em;color:#111a27}
+.article-body ul,.article-body ol{padding-left:1.5em;margin:0 0 1.35em}
+.article-body li{padding-left:.25em;margin:.35em 0}
+.article-body blockquote{margin:1.5em 0;padding:14px 20px;border-left:4px solid var(--red);background:#f6f7f9;color:#465164;font-size:18px}
+.article-body a{color:#b9232a;text-decoration:underline;text-underline-offset:3px}
+.article-body img{display:block;max-width:100%;height:auto;border-radius:8px;margin:1.5em auto}
+.article-body figure{margin:1.5em 0}
+.article-body figcaption{font-size:13px;color:var(--muted);text-align:center;margin-top:8px}
+.article-body hr{border:0;border-top:1px solid var(--line);margin:2em 0}
