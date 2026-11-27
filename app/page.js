@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getArticles, getVideos, videoThumbnail } from '@/lib/content';
-import { articleBanner } from '@/lib/article-banner';
+import ArticleCover from '@/components/ArticleCover';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,7 +62,7 @@ export default async function HomePage() {
             {latest.length ? <div className="reference-article-grid">
               {latest.map((article,i)=><article className="reference-article" key={article.id}>
                 <Link href={`/actualites/${article.slug}`} className="reference-article-image">
-                  <img src={article.cover_url || articleBanner(article)} alt={article.title} loading={i>2?'lazy':'eager'} />
+                  <ArticleCover article={article} loading={i>2?'lazy':'eager'} />
                 </Link>
                 <div className="reference-article-body">
                   <span className="reference-category">{article.category?.name || 'ACTUALITÉS'}</span>
