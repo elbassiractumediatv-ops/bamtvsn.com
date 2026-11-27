@@ -343,3 +343,20 @@
  .article-cover-fallback{padding:14px}
  .article-cover-fallback strong{font-size:15px}
 }
+
+
+/* Harmonisation des cartes de la une sur la page d'accueil */
+.reference-article-image{display:block;width:100%;aspect-ratio:16/9;min-width:0}
+.reference-article-image .article-cover-fallback-card{height:100%;aspect-ratio:auto;padding:clamp(9px,1.6vw,18px)}
+.reference-article-image .article-cover-fallback-card strong{font-size:clamp(10px,1.25vw,15px);-webkit-line-clamp:2}
+.reference-article-body{min-width:0}
+.reference-article h2{display:-webkit-box;overflow:hidden;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow-wrap:anywhere}
+@media(max-width:600px){
+ .reference-article-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+ .reference-article-image{aspect-ratio:16/9}
+ .reference-article-image .article-cover-fallback-card{padding:9px}
+ .reference-article-image .article-cover-fallback-card strong{font-size:10px}
+ .reference-article-body{padding:8px 8px 10px}
+ .reference-article h2{font-size:13px;line-height:1.35;-webkit-line-clamp:4}
+ .reference-article small{font-size:10px}
+}
