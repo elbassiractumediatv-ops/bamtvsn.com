@@ -33,7 +33,7 @@ export default async function HomePage() {
   const trendingVideos = dailyVideoSelection(videos);
   return (
     <div className="reference-home">
-      <HomeHero headlines={articles.slice(0,8).map(article => ({ title: article.title, time: article.published_at ? new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit'}).format(new Date(article.published_at)) : '—' }))} />
+      <HomeHero headlines={articles.slice(0,8).map(article => ({ title: article.title, time: article.published_at ? new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit'}).format(new Date(article.published_at)) : '—' }))} ads={advertisements} />
 
       <main className="reference-main">
         <div className="reference-content-grid">
