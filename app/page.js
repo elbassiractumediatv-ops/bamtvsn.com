@@ -16,13 +16,13 @@ function formatDate(value) {
 
 export default async function HomePage() {
   const [articles, videos, emissions] = await Promise.all([
-    getArticles(9).catch(() => []),
+    getArticles(100).catch(() => []),
     getVideos(5).catch(() => []),
     getEmissions(3).catch(() => []),
   ]);
 
   const lead = articles[0] ?? null;
-  const latest = articles.slice(1, 7);
+  const latest = articles.slice(1);
 
   return (
     <div className="home-redesign">
@@ -68,7 +68,7 @@ export default async function HomePage() {
 
       <section className="section soft">
         <div className="wrap">
-          <div className="section-head"><div><p className="eyebrow">Le fil de l’information</p><h2>Dernières actualités</h2></div><Link className="text-link" href="/actualites">Toute l’actualité →</Link></div>
+          <div className="section-head"><div><p className="eyebrow">Le fil de l’information</p><h2>Toutes les actualités récentes</h2></div><Link className="text-link" href="/actualites">Toute l’actualité →</Link></div>
           {latest.length ? <div className="cards">{latest.map(article => <ArticleCard key={article.id} article={article} />)}</div> : <EmptyState title="Aucun autre article pour le moment">Consultez régulièrement cette rubrique pour suivre les nouvelles publications.</EmptyState>}
         </div>
       </section>
