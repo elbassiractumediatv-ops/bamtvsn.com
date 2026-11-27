@@ -23,9 +23,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: android-app/package-lock.json
-      - run: npm ci
+      - run: npm install
       - run: npx expo-doctor
       - run: npx tsc --noEmit
       - run: npx expo export --platform android
@@ -50,8 +48,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
-          cache-dependency-path: android-app/android/*.gradle*
       - uses: android-actions/setup-android@v3
         with:
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
