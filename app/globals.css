@@ -963,3 +963,42 @@ body:has(.reference-home) .site-header{display:none!important}
  .bam-home-ad-column .publicite-playlist-label strong{font-size:9px}
  .bam-home-ad-column .publicite-playlist-whatsapp{font-size:8px;padding:5px 6px}
 }
+
+
+/* BAM TV SN homepage hero: one prominent brand mark on the left, content and players aligned right */
+body:has(.reference-home) .bam-hero-nav{justify-content:flex-end}
+body:has(.reference-home) .bam-nav-brand{display:none!important}
+body:has(.reference-home) .bam-hero-inner{
+  grid-template-columns:minmax(190px,.72fr) minmax(285px,1fr) minmax(440px,1.72fr);
+  gap:18px;
+  align-items:center;
+}
+body:has(.reference-home) .bam-hero-logo-wrap{grid-column:1;grid-row:1;justify-content:flex-start}
+body:has(.reference-home) .bam-hero-logo{width:100%;max-width:230px;height:210px}
+body:has(.reference-home) .bam-hero-copy{grid-column:2;grid-row:1;justify-self:start;width:100%;padding:12px 0}
+body:has(.reference-home) .bam-hero-copy h1{font-size:clamp(40px,4.4vw,62px);white-space:nowrap}
+body:has(.reference-home) .bam-hero-media{grid-column:3;grid-row:1;justify-self:end;width:100%;min-width:0}
+body:has(.reference-home) .bam-live-ads-layout{grid-template-columns:minmax(0,1.22fr) minmax(0,.94fr);gap:12px}
+@media(max-width:1120px){
+  body:has(.reference-home) .bam-hero-inner{grid-template-columns:minmax(150px,.62fr) minmax(250px,1fr) minmax(360px,1.55fr);gap:12px}
+  body:has(.reference-home) .bam-hero-logo{max-width:185px;height:175px}
+  body:has(.reference-home) .bam-hero-copy h1{font-size:clamp(36px,4vw,52px)}
+}
+@media(max-width:850px){
+  body:has(.reference-home) .bam-hero-inner{grid-template-columns:minmax(125px,.48fr) minmax(0,1fr);gap:14px}
+  body:has(.reference-home) .bam-hero-logo-wrap{grid-column:1;grid-row:1;justify-content:flex-start}
+  body:has(.reference-home) .bam-hero-logo{max-width:165px;height:145px}
+  body:has(.reference-home) .bam-hero-copy{grid-column:2;grid-row:1}
+  body:has(.reference-home) .bam-hero-media{grid-column:1/-1;grid-row:2;justify-self:end;width:100%;max-width:680px}
+}
+@media(max-width:520px){
+  body:has(.reference-home) .bam-hero-inner{grid-template-columns:82px minmax(0,1fr);gap:9px;width:calc(100% - 24px)}
+  body:has(.reference-home) .bam-hero-logo{width:100%;max-width:82px;height:92px}
+  body:has(.reference-home) .bam-hero-copy{padding:4px 0}
+  body:has(.reference-home) .bam-hero-copy h1{font-size:clamp(27px,7vw,38px);white-space:normal;margin:7px 0 10px}
+  body:has(.reference-home) .bam-hero-kicker{font-size:11px;padding:5px 8px}
+  body:has(.reference-home) .bam-hero-socials{gap:5px;font-size:10px}
+  body:has(.reference-home) .bam-hero-socials>a:not(.bam-hero-live){min-height:27px;padding:0 9px;font-size:9px}
+  body:has(.reference-home) .bam-hero-live{min-height:27px;padding:0 9px;font-size:9px}
+  body:has(.reference-home) .bam-hero-media{grid-column:1/-1;grid-row:2;width:100%;max-width:none}
+}
