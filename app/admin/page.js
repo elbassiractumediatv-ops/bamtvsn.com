@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { getAdminUser } from '@/lib/admin';
-import { createServerSupabaseClient } from '@/lib/supabase/server';
+import { getAdminUser, hasAdminMfa } from '@/lib/admin';
 import { getCategories, getEmissions } from '@/lib/content';
 import { loginAction, logoutAction, createVideoAction, createArticleAction, createEmissionAction } from './actions';
+import { AdminMfa } from './mfa-form';
 
 export const dynamic='force-dynamic';
 function Status({params}){
@@ -19,8 +19,26 @@ function Tabs({tab}){return <div className="admin-tabs">{[['video','Ajouter une 
 
 export default async function AdminPage({searchParams}){
   const params=await searchParams; const tab=['video','article','emission'].includes(params.tab)?params.tab:'video';
-  const {user}=await getAdminUser();
+  const {supabase,user}=await getAdminUser();
   if(!user)return <section className="admin-shell"><div className="admin-panel" style={{maxWidth:480}}><p className="eyebrow">Espace sécurisé</p><h1>Administration</h1><p>Connectez-vous avec le compte administrateur BAM TV SN.</p><Status params={params}/><form action={loginAction} className="admin-form"><Field label="Adresse e-mail" name="email" type="email" required placeholder="vous@exemple.com"/><Field label="Mot de passe" name="password" type="password" required/><button className="button">Se connecter</button></form></div></section>;
+  if (!(await hasAdminMfa(supabase))) {
+    const { data, error } = await supabase.auth.mfa.listFactors();
+    const factors = data?.totp.map(({ id, friendly_name }) => ({
+      id,
+      name: friendly_name || 'Application d’authentification',
+    })) ?? [];
+    return (
+      <section className="admin-shell">
+        <div className="admin-panel" style={{ maxWidth: 480 }}>
+          <h1>Double authentification</h1>
+          {error || (!factors.length && data?.all.some(factor => factor.status === 'verified'))
+            ? <p role="alert">Impossible de vérifier les méthodes d’authentification de ce compte.</p>
+            : <AdminMfa factors={factors} />}
+          <form action={logoutAction}><button className="plain-button">Déconnexion</button></form>
+        </div>
+      </section>
+    );
+  }
   const categories=(await getCategories(tab==='video'?'video':'article').catch(()=>[])); const emissions=(await getEmissions(100).catch(()=>[]));
   return <section className="admin-shell"><div className="admin-panel"><div className="admin-top"><div><p className="eyebrow">BAM TV SN · Administration</p><h1>Publier un contenu</h1><p>Connecté comme {user.email}</p></div><form action={logoutAction}><button className="plain-button">Déconnexion</button></form></div><Status params={params}/><Tabs tab={tab}/>
     {tab==='video'&&<form action={createVideoAction} className="admin-form"><div className="admin-grid"><Field label="Titre de la vidéo" name="title" required placeholder="Ex. Le journal de ce soir"/><Field label="ID YouTube (11 caractères)" name="youtube_id" required placeholder="dQw4w9WgXcQ"/></div><Field label="Description" name="description"/><div className="admin-grid"><Field label="URL de la miniature (optionnel)" name="thumbnail_url" placeholder="https://…"/><label>Catégorie<select name="category_id"><option value="">Sans catégorie</option>{categories.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</select></label></div><label>Émission (optionnel)<select name="emission_id"><option value="">Aucune émission</option>{emissions.map(e=><option key={e.id} value={e.id}>{e.title}</option>)}</select></label><button className="button">Publier la vidéo</button></form>}
