@@ -101,12 +101,28 @@ export async function createArticleAction(form) {
   const title = val(form, 'title');
   const excerpt = val(form, 'excerpt');
   const content = val(form, 'content');
-  const cover = val(form, 'cover_url');
+  const coverInput = val(form, 'cover_url');
+  const imageFile = form.get('cover_file');
+  const hasImageFile = imageFile instanceof File && imageFile.size > 0;
   const category = val(form, 'category_id');
   const status = val(form, 'status') === 'published' ? 'published' : 'draft';
+  const allowedImageTypes = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
   if (title.length < 3 || !within(title, 200) || !within(excerpt, 400) || !content ||
-      !within(content, 100000) || !validUuid(category) || !validUrl(cover)) {
+      !within(content, 100000) || !validUuid(category) || !validUrl(coverInput) ||
+      (hasImageFile && (!allowedImageTypes[imageFile.type] || imageFile.size > 8 * 1024 * 1024 ||
+        !(await validImageSignature(imageFile, imageFile.type))))) {
     redirect('/admin?tab=article&error=article');
+  }
+  let cover = coverInput;
+  if (hasImageFile) {
+    const extension = allowedImageTypes[imageFile.type];
+    const imagePath = `banners/${Date.now()}-${crypto.randomUUID()}.${extension}`;
+    const { error: uploadError } = await supabase.storage.from('articles').upload(imagePath, imageFile, {
+      contentType: imageFile.type, cacheControl: '31536000', upsert: false
+    });
+    if (uploadError) redirect('/admin?tab=article&error=upload');
+    const { data: publicImage } = supabase.storage.from('articles').getPublicUrl(imagePath);
+    cover = publicImage.publicUrl;
   }
   const { data: articleCategory } = await supabase.from('categories').select('id').eq('id', category).eq('type', 'article').maybeSingle();
   if (!articleCategory) redirect('/admin?tab=article&error=article');
