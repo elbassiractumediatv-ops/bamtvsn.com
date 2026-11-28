@@ -7,9 +7,6 @@ const videoCategories = ['Politique','Reportages','Émissions','En direct','Repl
 const socials = [
   { label: 'YouTube', short: '▶', className: 'social-youtube', href: 'https://www.youtube.com/@BAMTVSN' },
   { label: 'Facebook', short: 'f', className: 'social-facebook', href: 'https://www.facebook.com/profile.php?id=103507534697163' },
-  { label: 'Instagram', short: '◎', className: 'social-instagram', href: 'https://www.instagram.com/' },
-  { label: 'TikTok', short: '♪', className: 'social-tiktok', href: 'https://www.tiktok.com/' },
-  { label: 'X', short: '𝕏', className: 'social-x', href: 'https://x.com/' },
 ];
 
 function toCategorySlug(value) {
